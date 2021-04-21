@@ -53,10 +53,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
-            Route::domain(basedURL('sinau'))
+            Route::domain(basedURL('gancangpinter'))
                 ->middleware('web')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/sinau.php'));
+                ->group(base_path('routes/gancangpinter.php'));
         });
     }
 
