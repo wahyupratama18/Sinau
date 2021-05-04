@@ -24,7 +24,68 @@ Route::middleware('auth:sanctum')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    /* Route::middleware('teacher:3')->get('/dash', function () {
-        return 'ok';
-    }); */
+    Route::middleware('teacher:1')->group(function () {
+
+        /**
+         * Resources classrooms
+        */
+        Route::get('classrooms', function () {
+            
+        });
+
+        /**
+         * Resource departments
+        */
+        Route::get('departments', function () {
+            
+        });
+
+        /**
+         * Resource students
+        */
+        Route::get('students', function () {
+            
+        });
+
+        /**
+         * Resource Teachers
+        */
+        Route::get('teachers', function () {
+            
+        });
+
+        /**
+         * Resource Years
+        */
+        Route::get('years', function () {
+            
+        });
+
+        /**
+         * Resource Semesters
+        */
+        Route::get('semesters', function () {
+            
+        });
+
+        /**
+         * Resource New Schedules
+        */
+        Route::get('schedules', function () {
+            
+        });
+        
+
+    });
+
+    Route::middleware('teacher:2')->group(function () {
+        
+    });
+
+    Route::middleware('siswa')->group(function () {
+
+        Route::get('/report', function () {
+            
+        });
+    });
 });
