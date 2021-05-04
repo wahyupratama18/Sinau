@@ -12,11 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens,
+        HasFactory,
+        HasProfilePhoto,
+        Notifiable,
+        TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -60,4 +60,23 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Is Student
+    */
+    public function student()
+    {
+        return $this->hasOne(Student::class)->where('active', 1);
+    }
+
+
+    /**
+     * Is Teacher
+    */
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+
 }
