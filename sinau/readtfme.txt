@@ -1,0 +1,4 @@
+1. Minta template proposal ke sofia
+2. ngerjain halaman siswa
+	yang belum : assignment sama halaman awal abis login
+3. meeting nanti malem
