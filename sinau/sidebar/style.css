@@ -2,8 +2,6 @@ body {
     font-family: 'Rubik', sans-serif;
     padding-top: 9vh;
 	font-size: auto;
-	position: relative;
-	min-height: 100vh;
 }
 .navbar{
     background-color: #487eb0;
