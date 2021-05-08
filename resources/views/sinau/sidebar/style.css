@@ -1,0 +1,125 @@
+body {
+    font-family: 'Rubik', sans-serif;
+    padding-top: 9vh;
+	font-size: auto;
+}
+.navbar{
+    background-color: #487eb0;
+}
+.navbar .navbar-brand,
+.navbar .navbar-brand:hover{
+    color: white;
+}
+.navbar .navbar-nav .nav-link{
+    color:#dfe4ea;
+}
+.navbar .navbar-nav .nav-link:hover{
+    color:white;
+}
+.float-right{
+    color: #dfe4ea;
+}
+.jumbotron{
+    position: relative;
+    overflow: hidden;
+    background-color: aliceblue;
+    width: auto;
+    height: auto;
+    justify-content: center;
+}
+.img-fluid{
+    height: 50vh;
+    max-width: auto;
+    margin-left: 4vh;
+}
+.card{
+    border: none;
+}
+.navbar-toggler .navbar-toggler-icon{
+    color: white;
+}
+.display-4{
+    margin-top: 6vh;
+}
+.card-solid{
+    width: 100%;
+    height: 22vh;
+    margin: auto;
+}
+.gradient-custom {
+    background: #487eb0;
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 0.5), rgba(37, 117, 252, 0.5));
+    background: linear-gradient(to right, rgba(0, 68, 131, 0.5), rgba(15, 86, 209, 0.5))
+}
+.footer{
+    background-color: #487eb0;
+	width: 100%;
+	position: fixed-bottom;
+}
+.main-content{
+	width: 50%;
+	border-radius: 20px;
+	box-shadow: 0 5px 5px rgba(0,0,0,.4);
+	margin: 5em auto;
+	display: flex;
+}
+.company__info{
+	background-color: #487eb0;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: #fff;
+}
+.fa-android{
+	font-size:3em;
+}
+@media screen and (max-width: 640px) {
+	.main-content{width: 90%;}
+	.company__info{
+		display: none;
+	}
+	.login_form{
+		border-top-left-radius:20px;
+		border-bottom-left-radius:20px;
+	}
+}
+@media screen and (min-width: 642px) and (max-width:800px){
+	.main-content{width: 70%;}
+}
+.row > h2{
+	color:#008080;
+}
+.login_form{
+	background-color: #fff;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+	border-top:1px solid #ccc;
+	border-right:1px solid #ccc;
+    justify-content: center;
+}
+form{
+	padding: 0 2em;
+}
+.form__input{
+	width: 100%;
+	border:0px solid transparent;
+	border-radius: 0;
+	border-bottom: 1px solid #aaa;
+	padding: 1em .5em .5em;
+	padding-left: 2em;
+	outline:none;
+	margin:1.5em auto;
+	transition: all .5s ease;
+}
+.form__input:focus{
+	border-bottom-color: #008080;
+	box-shadow: 0 0 5px rgba(0,80,80,.4); 
+	border-radius: 4px;
+}
+html {
+	font-size: 1rem;
+  }
+  
+  

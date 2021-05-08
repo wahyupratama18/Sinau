@@ -14,8 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('sinau.index');
+})->name('landing');
+
+Route::get('/about', function () {
+    return view('sinau.about');
+})->name('about');
+
+Route::get('/guru', function () {
+    return view('sinau.guru');
+})->name('guru');
 
 
 Route::middleware('auth:sanctum')->group(function () {

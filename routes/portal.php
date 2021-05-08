@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\{Auth, Route};
 Route::get('/', function () {
     if (Auth::check()) return redirect()->to('dashboard');
     return view('auth.login');
-});
+})->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     
