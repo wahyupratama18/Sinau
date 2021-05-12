@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Portal\Admin;
 
 use App\Models\{Teacher, User};
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
 
@@ -148,6 +149,7 @@ class TeacherLivewire extends Component
                 'tanggalLahir' => $this->tanggalLahir,
                 'phone_number' => $this->phone_number,
                 'address' => $this->address,
+                'password' => $this->teacher->user->password ?? Hash::make(date('dmY', strtotime($this->tanggalLahir)))
             ]
         )->id;
 
@@ -174,16 +176,16 @@ class TeacherLivewire extends Component
         $this->teachID = $id;
         
         // Set All Of These
-        $teach = Teacher::with('user')->find($id);
+        $this->teacher = Teacher::with('user')->find($id);
         
-        $this->userID = $teach->user_id ?? null;
-        $this->name = $teach->user->name ?? null;
-        $this->nip = $teach->nip ?? null;
-        $this->email = $teach->user->email ?? null;
-        $this->tempatLahir = $teach->user->tempatLahir ?? null;
-        $this->tanggalLahir = $teach && $teach->user->tanggalLahir ? $teach->user->tanggalLahir->toDateString() : null;
-        $this->phone_number = $teach->user->phone_number ?? null;
-        $this->address = $teach->user->address ?? null;
+        $this->userID = $this->teacher->user_id ?? null;
+        $this->name = $this->teacher->user->name ?? null;
+        $this->nip = $this->teacher->nip ?? null;
+        $this->email = $this->teacher->user->email ?? null;
+        $this->tempatLahir = $this->teacher->user->tempatLahir ?? null;
+        $this->tanggalLahir = $this->teacher && $this->teacher->user->tanggalLahir ? $this->teacher->user->tanggalLahir->toDateString() : null;
+        $this->phone_number = $this->teacher->user->phone_number ?? null;
+        $this->address = $this->teacher->user->address ?? null;
 
     }
 
