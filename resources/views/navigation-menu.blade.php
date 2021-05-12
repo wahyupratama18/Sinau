@@ -1,24 +1,36 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav class="bg-gray-700 text-white fixed w-full top-0 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('dashboard') }}" class="flex space-x-3">
                         <x-jet-application-mark class="block h-9 w-auto" />
+                        <h1 class="font-lg mt-1 font-semibold">Layanan Terpadu</h1>
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                {{-- <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
+                </div> --}}
+                <div class="flex-shrink-0 flex items-center ml-4">
+                    <button
+                    class="inline-flex items-center justify-center p-1 rounded-full text-white hover:bg-indigo-300 focus:outline-none focus:bg-indigo-300 transition"
+                    @click="open = ! open"
+                    >
+                        <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            
+            <div class="flex items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
@@ -74,7 +86,8 @@
                     <x-jet-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none transition items-center space-x-2">
+                                    <span>{{ Auth::user()->name }}</span>
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
@@ -93,11 +106,11 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                                {{ __('Pengaturan Akun') }}
                             </div>
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                {{ __('Data Diri') }}
                             </x-jet-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -121,97 +134,62 @@
                         </x-slot>
                     </x-jet-dropdown>
                 </div>
+                
             </div>
 
-            <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-jet-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4">
-                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="flex-shrink-0 mr-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                    </div>
-                @endif
-
-                <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <!-- Account Management -->
-                <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
-                </x-jet-responsive-nav-link>
-
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-jet-responsive-nav-link>
-                @endif
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-jet-responsive-nav-link href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-jet-responsive-nav-link>
-                </form>
-
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
-
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
-                    </x-jet-responsive-nav-link>
-
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-jet-responsive-nav-link>
-                    @endcan
-
-                    <div class="border-t border-gray-200"></div>
-
-                    <!-- Team Switcher -->
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Switch Teams') }}
-                    </div>
-
-                    @foreach (Auth::user()->allTeams() as $team)
-                        <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
-                    @endforeach
-                @endif
-            </div>
-        </div>
-    </div>
 </nav>
+
+{{-- Responsive Sidebar --}}
+<div
+x-show="open"
+x-transition:enter="transition-all ease-in-out duration-1000"
+x-transition:enter-start="transform -translate-x-full"
+x-transition:enter-end="transform transform-x-0"
+x-transition:leave="transition-all ease-in-out duration-1000"
+x-transition:leave-start="transform transform-x-0"
+x-transition:leave-end="transform -translate-x-full"
+@click.away="open = false"
+@keydown.escape="open = false"
+class="fixed top-16 bottom-0 z-50 bg-white w-64 overflow-y-auto shadow-md">
+    <!-- Responsive Settings Options -->
+    <div class="pt-4 pb-1 space-y-1">
+
+        <!-- Account Management -->
+        <x-dropdown icon="home" title="Beranda" href="dashboard"></x-dropdown>
+        
+        {{-- Siswa --}}
+        @if (Auth::user()->siswa)
+            <x-dropdown icon="home" title="Hasil Pembelajaran" href="siswa.report"></x-dropdown>
+        @else
+            @if (Auth::user()->teacher->role->contains('role', 1))
+            <x-dropdown icon="archive" title="Data" :subs="[
+                (object) ['link' => 'admin.teacher', 'icon' => 'account-multiple', 'title' => 'Guru'],
+                (object) ['link' => 'admin.student', 'icon' => 'account-multiple', 'title' => 'Siswa'],
+                (object) ['link' => 'admin.department', 'icon' => 'account-multiple', 'title' => 'Jurusan'],
+                (object) ['link' => 'admin.classroom', 'icon' => 'account-multiple', 'title' => 'Kelas'],
+                (object) ['link' => 'admin.year', 'icon' => 'account-multiple', 'title' => 'Tahun Pelajaran'],
+                (object) ['link' => 'admin.semester', 'icon' => 'account-multiple', 'title' => 'Semester'],
+                (object) ['link' => 'admin.schedule', 'icon' => 'account-multiple', 'title' => 'Jadwal Pelajaran'],
+            ]"></x-dropdown>
+            @endif
+
+            @if (Auth::user()->teacher->role->contains('role', 2))
+                <x-dropdown></x-dropdown>
+            @endif
+        @endif
+    </div>
+</div>
+<!-- Backdrop -->
+<div
+x-show="open"
+x-transition:enter="transition ease-in-out duration-150"
+x-transition:enter-start="opacity-0"
+x-transition:enter-end="opacity-100"
+x-transition:leave="transition ease-in-out duration-150"
+x-transition:leave-start="opacity-100"
+x-transition:leave-end="opacity-0"
+class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
+></div>

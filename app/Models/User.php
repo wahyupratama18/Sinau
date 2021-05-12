@@ -63,6 +63,7 @@ class User extends Authenticatable
 
     /**
      * Is Student
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
     */
     public function student()
     {
@@ -72,6 +73,7 @@ class User extends Authenticatable
 
     /**
      * Is Teacher
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
     */
     public function teacher()
     {
