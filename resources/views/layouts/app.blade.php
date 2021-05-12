@@ -44,5 +44,28 @@
         @stack('modals')
 
         @livewireScripts
+
+        @stack('js')
+        <script>
+            window.addEventListener('alert', event => {
+                
+                data = {
+                    title: event.detail.title ?? '',
+                    message: event.detail.message,
+                    position: 'topRight'
+                }
+
+                switch(event.detail.type){
+                    case 'success':
+                        iziToast.success(data)
+                        break
+                    case 'error':
+                        iziToast.error(data)
+                        break
+                }
+
+
+            })
+        </script>
     </body>
 </html>

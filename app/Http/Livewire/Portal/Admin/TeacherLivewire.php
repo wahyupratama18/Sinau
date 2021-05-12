@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire\Portal\Admin;
 
-use App\Models\Teacher;
+use App\Models\{Teacher, User};
+use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
 
 class TeacherLivewire extends Component
@@ -12,66 +13,88 @@ class TeacherLivewire extends Component
 
     /**
      * Pagination
+     * @var int $paginate
     */
     public $paginate = 5,
 
     /**
      * Search Query
+     * @var mixed $search
     */
     $search = null,
     
     
     /**
      * Role
+     * @var string[] $role
     */
     $role = [ 1 => 'Admin', 2 => 'Guru'],
     
     /**
      * [Input] Name
+     * @var mixed $name
     */
     $name,
     
     /**
      * [Input] Nip
+     * @var mixed $nip
     */
     $nip,
 
     /**
      * [Input] Email
+     * @var mixed $email
     */
     $email,
     
     /**
      * [Input] Tempat Lahir
+     * @var mixed $tempatLahir
     */
     $tempatLahir,
     
     /**
      * [Input] Tanggal Lahir
+     * @var mixed $tanggalLahir
     */
     $tanggalLahir,
     
     /**
      * [Input] Phone number
+     * @var mixed $phone_number
     */
     $phone_number,
     
     /**
      * [Input] Alamat
+     * @var mixed $address
     */
-    $address;
+    $address,
+    
+    /**
+     * Teacher
+     * @var App\Models\Teacher
+    */
+    $teacher,
+    
+    /**
+     * ID
+     * @var int|null $teachID
+    */
+    $teachID,
 
-    protected $rules = [
-        'name' => 'required|string',
-        'nip' => 'integer',
-        'email' => 'required|email',
-        'tempatLahir' => 'required|string',
-        'tanggalLahir' => 'required|date',
-        'phone_number' => 'required',
-        'address' => 'required'
-    ];
+    /**
+     * Protected User ID
+     * @var int|null $userID
+    */
+    $userID;
 
 
+    /**
+     * Render Component
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+    */
     public function render()
     {
         $search = $this->search;
@@ -85,13 +108,83 @@ class TeacherLivewire extends Component
         ]);
     }
 
+    /**
+     * Dynamic Rules
+    */
+    
+    /**
+     * Form Rule
+     * @var string[] $rules
+    */
+    protected function rules() {
+        return [
+            'name' => 'required|string',
+            'nip' => 'integer',
+            'email' => ['required','email', Rule::unique(User::class)->ignore($this->userID) ],
+            'tempatLahir' => 'required|string',
+            'tanggalLahir' => 'required|date',
+            'phone_number' => 'required|regex:/(62)[0-9]{9,15}/',
+            'address' => 'required'
+        ];
+
+    }
+
 
     /**
      * Save
+     * @return void
     */
     public function save()
     {
         $this->validate();
+
+        // Insert / Update User
+        $id = User::updateOrCreate(
+            ['id' => $this->userID],
+            [
+                'name' => $this->name,
+                'email' => $this->email,
+                'tempatLahir' => $this->tempatLahir,
+                'tanggalLahir' => $this->tanggalLahir,
+                'phone_number' => $this->phone_number,
+                'address' => $this->address,
+            ]
+        )->id;
+
+        // Update Teacher Side
+        Teacher::updateOrCreate(['id' => $this->teachID], ['nip' => $this->nip, 'user_id' => $id]);
+        $this->teachID = $this->userID = null;
+
+        // Trigger Save
         $this->emit('saved');
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah tersimpan'
+        ]);
     }
+
+    /**
+     * Set ID
+     * @param int|null $id
+     * @return void
+    */
+    public function setID(int $id = null)
+    {
+        $this->teachID = $id;
+        
+        // Set All Of These
+        $teach = Teacher::with('user')->find($id);
+        
+        $this->userID = $teach->user_id ?? null;
+        $this->name = $teach->user->name ?? null;
+        $this->nip = $teach->nip ?? null;
+        $this->email = $teach->user->email ?? null;
+        $this->tempatLahir = $teach->user->tempatLahir ?? null;
+        $this->tanggalLahir = $teach && $teach->user->tanggalLahir ? $teach->user->tanggalLahir->toDateString() : null;
+        $this->phone_number = $teach->user->phone_number ?? null;
+        $this->address = $teach->user->address ?? null;
+
+    }
+
 }

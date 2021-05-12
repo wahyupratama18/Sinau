@@ -8,7 +8,7 @@ class="py-12 mx-auto px-6">
                 <h2>{{ __('Data Guru') }}</h2>
                 <x-jet-button @click="view = 2">Tambah Data</x-jet-button>
             </div>
-            <h2 x-show="view == 2" class="cursor-pointer" @click="view = 1">< Kembali</h2>
+            <h2 x-show="view == 2" class="cursor-pointer" wire:click="setID(null)" @click="view = 1">< Kembali</h2>
         </div>
         <div class="p-4">
             <div x-show="view == 1">
@@ -45,7 +45,8 @@ class="py-12 mx-auto px-6">
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
                                 <td class="border border-gray-600 p-2">
                                     <button
-                                    wire:click="form({{ $value->id }})"
+                                    wire:click="setID({{ $value->id }})"
+                                    @click="view = 2"
                                     class="focus:outline-none my-1 text-white text-sm py-2 px-5 rounded-full bg-yellow-500 hover:bg-yellow-600 hover:shadow-lg">
                                         Edit
                                     </button>

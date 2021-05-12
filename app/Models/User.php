@@ -28,7 +28,9 @@ class User extends Authenticatable
         'email',
         'password',
         'address',
-        'phone_number'
+        'phone_number',
+        'tempatLahir',
+        'tanggalLahir'
     ];
 
     /**
@@ -50,6 +52,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'tanggalLahir' => 'date'
     ];
 
     /**
