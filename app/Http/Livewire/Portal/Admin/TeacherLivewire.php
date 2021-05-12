@@ -111,11 +111,7 @@ class TeacherLivewire extends Component
 
     /**
      * Dynamic Rules
-    */
-    
-    /**
-     * Form Rule
-     * @var string[] $rules
+     * @return (string|(string|\Illuminate\Validation\Rules\Unique)[])[]
     */
     protected function rules() {
         return [

@@ -34,7 +34,8 @@ class="py-12 mx-auto px-6">
                     <thead class="bg-gray-400">
                         <tr>
                             <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
-                            <th class="border border-gray-600 p-2" style="width: 75%;">Nama</th>
+                            <th class="border border-gray-600 p-2" style="width: 60%;">Nama</th>
+                            <th class="border border-gray-600 p-2">Kewenangan</th>
                             <th class="border border-gray-600 p-2">Opsi</th>        
                         </tr>
                     </thead>
@@ -44,17 +45,26 @@ class="py-12 mx-auto px-6">
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
                                 <td class="border border-gray-600 p-2">
+                                    <ol>
+                                        @foreach ($value->role as $tRole)
+                                        <li>{{ $role[$tRole->role] }}</li>
+                                        @endforeach
+                                    </ol>
+                                </td>
+                                <td class="border border-gray-600 p-2">
                                     <button
                                     wire:click="setID({{ $value->id }})"
                                     @click="view = 2"
                                     class="focus:outline-none my-1 text-white text-sm py-2 px-5 rounded-full bg-yellow-500 hover:bg-yellow-600 hover:shadow-lg">
                                         Edit
                                     </button>
+                                    @if ($value->user_id != Auth::id())    
                                     <button
                                     wire:click="destroy({{ $value->id }})"
                                     class="focus:outline-none my-1 text-white text-sm py-2 px-5 rounded-full bg-red-500 hover:bg-red-600 hover:shadow-lg">
                                         Hapus
                                     </button>
+                                    @endif
             
                                 </td>
                             </tr>
