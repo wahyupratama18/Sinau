@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::domain(basedURL('portal'))
                 ->middleware('web')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+                ->group(base_path('routes/portal.php'));
 
             Route::domain(basedURL('gancangpinter'))
                 ->middleware('web')

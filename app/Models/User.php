@@ -12,11 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens,
+        HasFactory,
+        HasProfilePhoto,
+        Notifiable,
+        TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +28,9 @@ class User extends Authenticatable
         'email',
         'password',
         'address',
-        'phone_number'
+        'phone_number',
+        'tempatLahir',
+        'tanggalLahir'
     ];
 
     /**
@@ -50,6 +52,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'tanggalLahir' => 'date'
     ];
 
     /**
@@ -60,4 +63,25 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Is Student
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+    */
+    public function student()
+    {
+        return $this->hasOne(Student::class)->where('active', 1);
+    }
+
+
+    /**
+     * Is Teacher
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+    */
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+
 }
