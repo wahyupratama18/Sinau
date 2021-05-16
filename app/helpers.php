@@ -40,7 +40,8 @@ if (!function_exists('css')) {
 			'wizard' => 'https://cdn.jsdelivr.net/npm/smartwizard@5/dist/css/smart_wizard_all.min.css',
 			'profile' => asset('/storage/css/profile.min.css'),
 			'article' => asset('/storage/css/articles.min.css'),
-			'owl' => 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css'
+			'owl' => 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css',
+			'choices' => 'https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css'
 		],$array);
 
 	}
@@ -68,7 +69,8 @@ if (!function_exists('js')) {
 			'lazy' => 'https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js',
 			'psb' => asset('/storage/vendors/js/psb.min.js'),
 			'chart' => 'https://cdn.jsdelivr.net/npm/apexcharts',
-			'owl' => 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js'
+			'owl' => 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js',
+			'choices' => 'https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js'
 		],$array);
 
 	}

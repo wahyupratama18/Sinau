@@ -27,7 +27,5 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: true
 // });
 
-/**
- * Izi Toast
-*/
 window.iziToast = require('izitoast');
+window.choices = require('choices.js');

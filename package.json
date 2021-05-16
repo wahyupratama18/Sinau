@@ -21,6 +21,7 @@
         "tailwindcss": "^2.0.1"
     },
     "dependencies": {
+        "choices.js": "^9.0.1",
         "izitoast": "^1.4.0"
     }
 }

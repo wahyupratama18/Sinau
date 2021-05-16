@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Portal\Admin;
 
-use App\Models\{Teacher, User};
+use App\Models\{Teacher, TeacherRole, User};
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
@@ -89,7 +89,19 @@ class TeacherLivewire extends Component
      * Protected User ID
      * @var int|null $userID
     */
-    $userID;
+    $userID,
+    
+    /**
+     * Change Permission
+     * @var bool $permission
+    */
+    $permission = false,
+    
+    /**
+     * Permission Access
+     * @var array $access
+    */
+    $access;
 
 
     /**
@@ -183,6 +195,45 @@ class TeacherLivewire extends Component
         $this->phone_number = $this->teacher->user->phone_number ?? null;
         $this->address = $this->teacher->user->address ?? null;
 
+    }
+
+
+    /**
+     * Start Change Permission
+    */
+    public function changePermission(int $id)
+    {
+        $this->teachID = $id;
+        // $this->access = TeacherRole::select('role')->where('teacher_id', $this->teachID)->get()->pluck('role');
+        $this->dispatchBrowserEvent('change-permission');
+        $this->permission = true;
+    }
+
+
+    /**
+     * Update Permission
+    */
+    public function updatePermission()
+    {
+
+        TeacherRole::whereNotIn('role', $this->access)
+        ->where('teacher_id', $this->teachID)
+        ->delete();
+
+        foreach ($this->access as $key) {
+            TeacherRole::firstOrCreate([
+                'teacher_id' => $this->teachID,
+                'role' => $key
+            ]);
+        }
+
+        $this->teachID = null;
+        $this->permission = false;
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Kewenangan telah diperbarui'
+        ]);
     }
 
 }

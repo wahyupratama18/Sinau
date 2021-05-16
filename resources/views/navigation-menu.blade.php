@@ -177,7 +177,7 @@ class="fixed top-16 bottom-0 z-50 bg-white w-64 overflow-y-auto shadow-md">
             @endif
 
             @if (Auth::user()->teacher->role->contains('role', 2))
-                <x-dropdown></x-dropdown>
+                <x-dropdown icon="" title="test" href="dashboard"></x-dropdown>
             @endif
         @endif
     </div>

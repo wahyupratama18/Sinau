@@ -13,10 +13,14 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
+        @stack('css')
+
         @livewireStyles
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        @stack('js')
     </head>
     <body x-data="{ open: false }"
     class="font-sans antialiased"
@@ -45,7 +49,7 @@
 
         @livewireScripts
 
-        @stack('js')
+        {{-- @stack('js') --}}
         <script>
             window.addEventListener('alert', event => {
                 

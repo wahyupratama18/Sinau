@@ -1,13 +1,17 @@
 <?php
 
-use App\Http\Livewire\Portal\Admin\ClassroomLivewire;
-use App\Http\Livewire\Portal\Admin\DepartmentLivewire;
-use App\Http\Livewire\Portal\Admin\ScheduleLivewire;
-use App\Http\Livewire\Portal\Admin\SemesterLivewire;
-use App\Http\Livewire\Portal\Admin\StudentLivewire;
-use App\Http\Livewire\Portal\Admin\TeacherLivewire;
-use App\Http\Livewire\Portal\Admin\YearLivewire;
-use App\Http\Livewire\Portal\Siswa\ReportLivewire;
+use App\Http\Livewire\Portal\Admin\{
+    ClassroomLivewire,
+    DepartmentLivewire,
+    ScheduleLivewire,
+    SemesterLivewire,
+    StudentLivewire,
+    TeacherLivewire,
+    YearLivewire
+};
+use App\Http\Livewire\Portal\Siswa\{
+    ReportLivewire
+};
 use Illuminate\Support\Facades\{Auth, Route};
 
 /*
