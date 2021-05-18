@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Portal\Admin;
 
 use App\Models\{Teacher, TeacherRole, User};
+use App\Traits\CreateUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
@@ -10,7 +11,7 @@ use Livewire\{Component, WithPagination};
 class TeacherLivewire extends Component
 {
 
-    use WithPagination;
+    use WithPagination, CreateUser;
 
     /**
      * Pagination
@@ -148,18 +149,16 @@ class TeacherLivewire extends Component
         $this->validate();
 
         // Insert / Update User
-        $id = User::updateOrCreate(
-            ['id' => $this->userID],
-            [
-                'name' => $this->name,
-                'email' => $this->email,
-                'tempatLahir' => $this->tempatLahir,
-                'tanggalLahir' => $this->tanggalLahir,
-                'phone_number' => $this->phone_number,
-                'address' => $this->address,
-                'password' => $this->teacher->user->password ?? Hash::make(date('dmY', strtotime($this->tanggalLahir)))
-            ]
-        )->id;
+        $id = self::createNew(
+            $this->userID,
+            $this->name,
+            $this->email,
+            $this->tempatLahir,
+            $this->tanggalLahir,
+            $this->phone_number,
+            $this->address,
+            $this->teacher->user->password
+        );
 
         // Update Teacher Side
         Teacher::updateOrCreate(['id' => $this->teachID], ['nip' => $this->nip, 'user_id' => $id]);
