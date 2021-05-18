@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire\Portal\Admin;
 
-use App\Models\{Teacher, User};
+use App\Models\{Teacher, TeacherRole, User};
+use App\Traits\CreateUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
@@ -10,7 +11,7 @@ use Livewire\{Component, WithPagination};
 class TeacherLivewire extends Component
 {
 
-    use WithPagination;
+    use WithPagination, CreateUser;
 
     /**
      * Pagination
@@ -89,7 +90,19 @@ class TeacherLivewire extends Component
      * Protected User ID
      * @var int|null $userID
     */
-    $userID;
+    $userID,
+    
+    /**
+     * Change Permission
+     * @var bool $permission
+    */
+    $permission = false,
+    
+    /**
+     * Permission Access
+     * @var array $access
+    */
+    $access;
 
 
     /**
@@ -136,18 +149,16 @@ class TeacherLivewire extends Component
         $this->validate();
 
         // Insert / Update User
-        $id = User::updateOrCreate(
-            ['id' => $this->userID],
-            [
-                'name' => $this->name,
-                'email' => $this->email,
-                'tempatLahir' => $this->tempatLahir,
-                'tanggalLahir' => $this->tanggalLahir,
-                'phone_number' => $this->phone_number,
-                'address' => $this->address,
-                'password' => $this->teacher->user->password ?? Hash::make(date('dmY', strtotime($this->tanggalLahir)))
-            ]
-        )->id;
+        $id = self::createNew(
+            $this->userID,
+            $this->name,
+            $this->email,
+            $this->tempatLahir,
+            $this->tanggalLahir,
+            $this->phone_number,
+            $this->address,
+            $this->teacher->user->password
+        );
 
         // Update Teacher Side
         Teacher::updateOrCreate(['id' => $this->teachID], ['nip' => $this->nip, 'user_id' => $id]);
@@ -183,6 +194,45 @@ class TeacherLivewire extends Component
         $this->phone_number = $this->teacher->user->phone_number ?? null;
         $this->address = $this->teacher->user->address ?? null;
 
+    }
+
+
+    /**
+     * Start Change Permission
+    */
+    public function changePermission(int $id)
+    {
+        $this->teachID = $id;
+        // $this->access = TeacherRole::select('role')->where('teacher_id', $this->teachID)->get()->pluck('role');
+        $this->dispatchBrowserEvent('change-permission');
+        $this->permission = true;
+    }
+
+
+    /**
+     * Update Permission
+    */
+    public function updatePermission()
+    {
+
+        TeacherRole::whereNotIn('role', $this->access)
+        ->where('teacher_id', $this->teachID)
+        ->delete();
+
+        foreach ($this->access as $key) {
+            TeacherRole::firstOrCreate([
+                'teacher_id' => $this->teachID,
+                'role' => $key
+            ]);
+        }
+
+        $this->teachID = null;
+        $this->permission = false;
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Kewenangan telah diperbarui'
+        ]);
     }
 
 }

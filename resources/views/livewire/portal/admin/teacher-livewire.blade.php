@@ -45,25 +45,26 @@ class="py-12 mx-auto px-6">
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
                                 <td class="border border-gray-600 p-2">
-                                    <ol>
+                                    <ol class="list-disc ml-4">
                                         @foreach ($value->role as $tRole)
                                         <li>{{ $role[$tRole->role] }}</li>
                                         @endforeach
                                     </ol>
                                 </td>
                                 <td class="border border-gray-600 p-2">
-                                    <button
+                                    <x-jet-button
                                     wire:click="setID({{ $value->id }})"
                                     @click="view = 2"
-                                    class="focus:outline-none my-1 text-white text-sm py-2 px-5 rounded-full bg-yellow-500 hover:bg-yellow-600 hover:shadow-lg">
-                                        Edit
-                                    </button>
+                                    class="bg-yellow-500 hover:bg-yellow-600 mb-2">
+                                        Edit Profil
+                                    </x-jet-button>
+                                    <x-jet-button wire:click="changePermission({{ $value->id }})" wire:loading.attr="disabled">
+                                        Ubah Kewenangan
+                                    </x-jet-button>
                                     @if ($value->user_id != Auth::id())    
-                                    <button
-                                    wire:click="destroy({{ $value->id }})"
-                                    class="focus:outline-none my-1 text-white text-sm py-2 px-5 rounded-full bg-red-500 hover:bg-red-600 hover:shadow-lg">
+                                    <x-jet-danger-button wire:click="destroy({{ $value->id }})">
                                         Hapus
-                                    </button>
+                                    </x-jet-danger-button>
                                     @endif
             
                                 </td>
@@ -73,7 +74,7 @@ class="py-12 mx-auto px-6">
                 </table>
                 
                 <div class="mt-2">
-                    {{-- {{ $teach->links() }} --}}
+                    {{ $teach->links() }}
                 </div>
             </div>
 
@@ -134,4 +135,39 @@ class="py-12 mx-auto px-6">
             </div>
         </div>
     </div>
+
+    {{-- Modal Here --}}
+    <x-jet-dialog-modal wire:model="permission">
+        <x-slot name="title">
+            {{ __('Ubah Kewenangan') }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Pilih kewenangan untuk pengguna.') }}
+
+            <div class="mt-4">
+                <x-select.multiple wire:model="access" selectID="acc" :options="$role" :select="[]">
+                    <x-slot name="options">
+                        <option placeholder>Pilih hak akses</option>
+                        @foreach ($role as $key => $val)
+                            <option value="{{ $key }}">{{ $val }}</option>
+                        @endforeach
+                    </x-slot>
+                </x-select.multiple>
+
+                <x-jet-input-error for="access" class="mt-2" />
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('permission')" wire:loading.attr="disabled">
+                {{ __('Batalkan') }}
+            </x-jet-secondary-button>
+
+            <x-jet-button class="ml-2" wire:click="updatePermission" wire:loading.attr="disabled">
+                {{ __('Simpan') }}
+            </x-jet-button>
+        </x-slot>
+    </x-jet-dialog-modal>
 </menu>
+<x-asset-pusher :css="css('choices')" :js="js('choices')"/>
