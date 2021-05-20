@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Portal\Admin;
 
 use App\Models\{Teacher, TeacherRole, User};
 use App\Traits\CreateUser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
 
@@ -199,6 +198,8 @@ class TeacherLivewire extends Component
 
     /**
      * Start Change Permission
+     * @param int $id
+     * @return void
     */
     public function changePermission(int $id)
     {
@@ -211,6 +212,7 @@ class TeacherLivewire extends Component
 
     /**
      * Update Permission
+     * @return void
     */
     public function updatePermission()
     {

@@ -7,7 +7,6 @@ use App\Models\{
     User
 };
 use App\Traits\CreateUser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\{
     Component,
@@ -85,12 +84,17 @@ class StudentLivewire extends Component
     */
     $userID;
 
+    /**
+     * Render Component
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+    */
     public function render()
     {
         $search = $this->search;
 
         return view('livewire.portal.admin.student-livewire', [
-            'siswa' => Student::whereHas('user', function($q) use ($search) {
+            'siswa' => Student::where('active', 1)
+            ->whereHas('user', function($q) use ($search) {
                 if ($search) return $q->where('name', 'like', "%$search%'");
             })->paginate($this->paginate)
         ]);
