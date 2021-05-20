@@ -2,11 +2,14 @@
 
 use App\Http\Livewire\Portal\Admin\{
     ClassroomLivewire,
+    CourseLivewire,
     DepartmentLivewire,
+    EnrollLivewire,
     ScheduleLivewire,
     SemesterLivewire,
     StudentLivewire,
     TeacherLivewire,
+    TimeLivewire,
     YearLivewire
 };
 use App\Http\Livewire\Portal\Siswa\{
@@ -45,6 +48,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('years', YearLivewire::class)->name('year');
         Route::get('semesters', SemesterLivewire::class)->name('semester');
         Route::get('schedules', ScheduleLivewire::class)->name('schedule');
+        Route::get('times', TimeLivewire::class)->name('times');
+        Route::get('course', CourseLivewire::class)->name('course');
+        Route::get('enroll', EnrollLivewire::class)->name('enroll');
 
     });
 

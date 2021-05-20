@@ -26,4 +26,9 @@ class Classroom extends Model
         'department_id' => 'integer',
         'group' => 'integer'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

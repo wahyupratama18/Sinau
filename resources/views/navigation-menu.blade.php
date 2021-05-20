@@ -172,7 +172,10 @@ class="fixed top-16 bottom-0 z-50 bg-white w-64 overflow-y-auto shadow-md">
                 (object) ['link' => 'admin.classroom', 'icon' => 'account-multiple', 'title' => 'Kelas'],
                 (object) ['link' => 'admin.year', 'icon' => 'account-multiple', 'title' => 'Tahun Pelajaran'],
                 (object) ['link' => 'admin.semester', 'icon' => 'account-multiple', 'title' => 'Semester'],
+                (object) ['link' => 'admin.course', 'icon' => 'account-multiple', 'title' => 'Mata Pelajaran'],
+                (object) ['link' => 'admin.enroll', 'icon' => 'account-multiple', 'title' => 'Pengajar'],
                 (object) ['link' => 'admin.schedule', 'icon' => 'account-multiple', 'title' => 'Jadwal Pelajaran'],
+                (object) ['link' => 'admin.times', 'icon' => 'account-multiple', 'title' => 'Jam Pembelajaran']
             ]"></x-dropdown>
             @endif
 

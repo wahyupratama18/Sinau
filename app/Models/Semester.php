@@ -26,4 +26,12 @@ class Semester extends Model
         'remarks' => 'integer',
         'active' => 'boolean'
     ];
+
+    /**
+     * Year Connectivity
+    */
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
 }
