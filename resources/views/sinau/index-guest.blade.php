@@ -1,4 +1,4 @@
-<x-gancang-pinter>
+<x-gancang-pinter.guest>
     <div class="jumbotron">
         <div class="col" style="margin-top: 10vh;">
             <div class="container">
@@ -30,7 +30,7 @@
         <div class="card-body">
             <h4 class="font-weight-bold" style="margin-top: 1.5vh;color: white;">Yuk, Mulai Belajar!</h4>
             <button type="button" class="btn btn-outline-light">
-                <a class="btn" href="login.html" style="color: black;" role="button">
+                <a class="btn" href="{{ route('login') }}" style="color: black;" role="button">
                     Login Disini
                 </a>
             </button>
@@ -83,4 +83,4 @@
             </div>
         </div>
     </div>
-</x-gancang-pinter>
+</x-gancang-pinter.guest>
