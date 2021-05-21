@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Portal\Admin;
 
 use App\Models\{Teacher, TeacherRole, User};
 use App\Traits\CreateUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
 
@@ -234,6 +235,26 @@ class TeacherLivewire extends Component
         $this->dispatchBrowserEvent('alert', [
             'type' => 'success',
             'message' => 'Kewenangan telah diperbarui'
+        ]);
+    }
+
+    /**
+     * Destroy
+     * @param int $id
+     * @return void
+    */
+    public function destroy(int $id)
+    {
+        if ($id === Auth::id()) abort(404);
+
+        $teach = Teacher::find($id);
+
+        User::find($teach->user_id)->delete();
+        $teach->delete();
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
         ]);
     }
 

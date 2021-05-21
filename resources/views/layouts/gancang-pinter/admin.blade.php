@@ -6,63 +6,18 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <h3>
-                    <a href="index2.html">Gancang Pinter</a>
+                    <a href="{{ route('landing') }}">Gancang Pinter</a>
                 </h3>
             </div>
 
             <ul class="list-unstyled components">
-                <p>Pendidikan Agama Islam</p>
-                <li class="active">
-                    <a
-                        href="#homeSubmenu"
-                        data-toggle="collapse"
-                        aria-expanded="false"
-                        class="dropdown-toggle">Hari Kiamat</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="tujuan.html">Tujuan Pembelajaran</a>
-                        </li>
-                        <li>
-                            <a href="#">Definisi</a>
-                        </li>
-                        <li>
-                            <a href="#">Lanjutan</a>
-                        </li>
-                        <li>
-                            <a href="assignment.html">Assignment</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a
-                        href="#pageSubmenu"
-                        data-toggle="collapse"
-                        aria-expanded="false"
-                        class="dropdown-toggle">Pendidikan Karakter</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#">Tujuan Pembelajaran</a>
-                        </li>
-                        <li>
-                            <a href="#">Definisi</a>
-                        </li>
-                        <li>
-                            <a href="#">Lanjutan</a>
-                        </li>
-                        <li>
-                            <a href="#">Assignment</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="teacher.html">Pengajar</a>
-                </li>
+                {{ $sidebar }}
             </ul>
         </nav>
 
         <!-- Page Content -->
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
                 <div class="container-fluid">
                     <button
                         type="button"
@@ -85,31 +40,27 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link disabled" href="dashboard.html">Raihan Nauval</a>
+                                <a class="nav-link disabled" href="{{ route('landing') }}">
+                                    {{ Auth::user()->name }}
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
 
-            <h2>Yuk, Selesaikan Pelajaran Kamu!</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('landing') }}">{{ __('Beranda') }}</a>
+                    </li>
+                    {{ $breadcrumb ?? null }}
+                </ol>
+            </nav>
 
-            <div class="line"></div>
+            {{ $slot }}
 
         </div>
-        {{ $slot }}
     </div>
 
     

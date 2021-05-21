@@ -102,4 +102,19 @@ class DepartmentLivewire extends Component
         $this->deptID = $id;
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return void
+    */
+    public function destroy(int $id)
+    {
+        Department::find($id)->delete();
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
+        ]);
+    }
+
 }

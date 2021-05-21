@@ -27,7 +27,7 @@
             {{ $slot }}
         </main>
         
-        @guest    
+        @guest
         <footer class="footer justify-content-center text-center mt-auto py-2">
             <div class="container">
                 <p style="color: white; margin-top: 2vh;">

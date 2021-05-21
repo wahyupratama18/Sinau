@@ -16,6 +16,12 @@ class SemesterLivewire extends Component
      * @var int $paginate
     */
     public $paginate = 5,
+
+    /**
+     * Search Query
+     * @var mixed $search
+    */
+    $search = null,
     
     /**
      * Mark
@@ -33,7 +39,12 @@ class SemesterLivewire extends Component
      * Remarks
      * @var mixed remarks
     */
-    $remarks;
+    $remarks,
+
+    /**
+     * Semester ID
+    */
+    $semesterID;
     
     /**
      * Render Component
@@ -41,9 +52,23 @@ class SemesterLivewire extends Component
     */
     public function render()
     {
+        $search = $this->search;
+
+        $semester = Semester::whereHas('year', function($q) use ($search) {
+            if ($search) return $q
+            ->where('start', 'like', "%$search%'")
+            ->orWhere('end', 'like', "%$search%'");
+        })
+        ->orderByDesc('active')
+        ->orderByDesc('year_id');
+
+        if ($search)
+            $semester->where('remarks', 'like', "%$search%");
+
         return view('livewire.portal.admin.semester-livewire', [
-            'semester' => Semester::with('year')->orderByDesc('year_id')->paginate($this->paginate),
-            'year' => Year::all()
+            'semester' => $semester->paginate($this->paginate),
+            'tahun' => Year::all(),
+            'mark' => $this->mark
         ]);
     }
 
@@ -68,8 +93,8 @@ class SemesterLivewire extends Component
         $this->validate();
 
         Semester::updateOrCreate(
-            ['year_id' => $this->year, 'remarks' => $this->remarks],
-            ['year_id' => $this->year]
+            ['id' => $this->semesterID],
+            ['year_id' => $this->year, 'remarks' => $this->remarks]
         );
 
         $this->emit('saved');
@@ -102,6 +127,7 @@ class SemesterLivewire extends Component
     public function setID(int $id = null)
     {
         $sem = Semester::find($id);
+        $this->semesterID = $id;
         $this->year = $sem->year_id ?? null;
         $this->remarks = $sem->remarks ?? null;
     }

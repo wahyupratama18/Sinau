@@ -5,7 +5,7 @@ namespace App\View\Components\Select;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Multiple extends Component
+class Single extends Component
 {
     /**
      * UUID
@@ -30,6 +30,6 @@ class Multiple extends Component
      */
     public function render()
     {
-        return view('components.select.multiple');
+        return view('components.select.single');
     }
 }

@@ -12,35 +12,17 @@ class="py-12 mx-auto px-6">
         </div>
         <div class="p-4">
             <div x-show="view == 1">
-                <div class="flex justify-between my-3">
-                    <!-- pagination -->
-                    <div>
-                        <label for="">Pilih</label>
-                        <select wire:model="paginate">
-                            @for($i=5; $i <= 25; $i+=5)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        </select>
-                        data
-                    </div>
-                    <!-- search -->
-                    <div>
-                        Cari
-                        <input type="text" wire:model="search" class="shadow appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    </div>
-                </div>
-        
-                <table class="table-auto w-full border-collapse border border-gray-600">
-                    <thead class="bg-gray-400">
+                <x-tables>
+                    <x-slot name="thead">
                         <tr>
                             <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
                             <th class="border border-gray-600 p-2" style="width: 60%;">Nama</th>
                             <th class="border border-gray-600 p-2">Kewenangan</th>
                             <th class="border border-gray-600 p-2">Opsi</th>        
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($teach as $key => $value)
+                    </x-slot>
+                    <x-slot name="tbody">
+                        @forelse($teach as $key => $value)
                             <tr>
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
@@ -69,13 +51,14 @@ class="py-12 mx-auto px-6">
             
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                
-                <div class="mt-2">
-                    {{ $teach->links() }}
-                </div>
+                        @empty
+                        <tr>
+                            <td class="p-2 text-center" colspan="4">Data tidak tersedia</td>
+                        </tr>
+                        @endforelse
+                    </x-slot>
+                    <x-slot name="links">{{ $teach->links() }}</x-slot>
+                </x-tables>
             </div>
 
             <div x-show="view == 2">
@@ -146,7 +129,7 @@ class="py-12 mx-auto px-6">
             {{ __('Pilih kewenangan untuk pengguna.') }}
 
             <div class="mt-4">
-                <x-select.multiple wire:model="access" selectID="acc" :options="$role" :select="[]">
+                <x-select.multiple wire:model="access">
                     <x-slot name="options">
                         <option placeholder>Pilih hak akses</option>
                         @foreach ($role as $key => $val)

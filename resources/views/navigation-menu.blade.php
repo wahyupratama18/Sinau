@@ -165,22 +165,32 @@ class="fixed top-16 bottom-0 z-50 bg-white w-64 overflow-y-auto shadow-md">
             <x-dropdown icon="home" title="Hasil Pembelajaran" href="siswa.report"></x-dropdown>
         @else
             @if (Auth::user()->teacher->role->contains('role', 1))
-            <x-dropdown icon="archive" title="Data" :subs="[
+            <x-dropdown icon="archive" title="Pengguna" :subs="[
                 (object) ['link' => 'admin.teacher', 'icon' => 'account-multiple', 'title' => 'Guru'],
                 (object) ['link' => 'admin.student', 'icon' => 'account-multiple', 'title' => 'Siswa'],
+                
+            ]"></x-dropdown>
+                
+            <x-dropdown icon="archive" title="Studi" :subs="[
                 (object) ['link' => 'admin.department', 'icon' => 'account-multiple', 'title' => 'Jurusan'],
-                (object) ['link' => 'admin.classroom', 'icon' => 'account-multiple', 'title' => 'Kelas'],
+                (object) ['link' => 'admin.classroom', 'icon' => 'account-multiple', 'title' => 'Kelas']
+            ]"></x-dropdown>
+                
+            <x-dropdown icon="archive" title="Akademik" :subs="[
                 (object) ['link' => 'admin.year', 'icon' => 'account-multiple', 'title' => 'Tahun Pelajaran'],
                 (object) ['link' => 'admin.semester', 'icon' => 'account-multiple', 'title' => 'Semester'],
+                (object) ['link' => 'admin.times', 'icon' => 'account-multiple', 'title' => 'Jam Pembelajaran']
+            ]"></x-dropdown>
+            
+            <x-dropdown icon="archive" title="Pengajaran" :subs="[
                 (object) ['link' => 'admin.course', 'icon' => 'account-multiple', 'title' => 'Mata Pelajaran'],
                 (object) ['link' => 'admin.enroll', 'icon' => 'account-multiple', 'title' => 'Pengajar'],
-                (object) ['link' => 'admin.schedule', 'icon' => 'account-multiple', 'title' => 'Jadwal Pelajaran'],
-                (object) ['link' => 'admin.times', 'icon' => 'account-multiple', 'title' => 'Jam Pembelajaran']
+                (object) ['link' => 'admin.schedule', 'icon' => 'account-multiple', 'title' => 'Jadwal Pelajaran']
             ]"></x-dropdown>
             @endif
 
             @if (Auth::user()->teacher->role->contains('role', 2))
-                <x-dropdown icon="" title="test" href="dashboard"></x-dropdown>
+                {{-- <x-dropdown icon="" title="test" href="dashboard"></x-dropdown> --}}
             @endif
         @endif
     </div>

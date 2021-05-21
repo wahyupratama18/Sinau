@@ -43,6 +43,7 @@ class YearLivewire extends Component
         return view('livewire.portal.admin.year-livewire', [
             'tahun' => Year::where('start', 'like', "%$this->search%")
             ->orWhere('end', 'like', "%$this->search%")
+            ->orderByDesc('id')
             ->paginate($this->paginate)
         ]);
     }
@@ -90,4 +91,18 @@ class YearLivewire extends Component
         $this->end = $tahun->end ?? null;
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return void
+    */
+    public function destroy(int $id)
+    {
+        Year::find($id)->delete();
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
+        ]);
+    }
 }

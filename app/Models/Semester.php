@@ -23,7 +23,7 @@ class Semester extends Model
     */
     $casts = [
         'year_id' => 'integer',
-        'remarks' => 'integer',
+        'remarks' => 'string',
         'active' => 'boolean'
     ];
 

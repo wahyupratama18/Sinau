@@ -54,15 +54,18 @@ class ClassroomLivewire extends Component
     public function render()
     {
         $search = $this->search;
+        $kelas = Classroom::whereHas('department', function($q) use ($search) {
+            if ($search) return $q
+            ->where('long', 'like', "%$search%'")
+            ->orWhere('abbr', 'like', "%$search%'");
+        });
+
+        if ($search) 
+            $kelas->where('level', 'like', "%$search%'")
+            ->orWhere('group', 'like', "%$search%'");
 
         return view('livewire.portal.admin.classroom-livewire', [
-            'kelas' => Classroom::where('level', 'like', "%$search%'")
-            ->orWhere('group', 'like', "%$search%'")
-            ->whereHas('department', function($q) use ($search) {
-                if ($search) return $q
-                ->where('long', 'like', "%$search%'")
-                ->orWhere('abbr', 'like', "%$search%'");
-            })->paginate($this->paginate),
+            'kelas' => $kelas->paginate($this->paginate),
             'dept' => Department::all()
         ]);
     }
@@ -73,8 +76,8 @@ class ClassroomLivewire extends Component
     */
     protected function rules() {
         return [
-            'level' => ['required','integer', Rule::in($this->types)],
-            'department' => ['required','integer', Rule::exists(Department::class)],
+            'level' => ['required', Rule::in($this->types)],
+            'department' => ['required','integer', Rule::exists(Department::class, 'id')],
             'group' => 'required|integer'
         ];
     }
@@ -86,10 +89,11 @@ class ClassroomLivewire extends Component
     public function save()
     {
         $this->validate();
-        Classroom::updateOrCreate(
-            ['level' => $this->level, 'department_id' => $this->department],
-            ['level' => $this->level, 'group' => $this->group]
-        );
+        Classroom::updateOrCreate([
+            'level' => $this->level,
+            'department_id' => $this->department,
+            'group' => $this->group
+        ]);
 
         $this->emit('saved');
 
@@ -110,5 +114,20 @@ class ClassroomLivewire extends Component
         $this->level = $cls->level ?? null;
         $this->department = $cls->department ?? null;
         $this->group = $cls->group ?? null;
+    }
+
+    /**
+     * Destroy
+     * @param int $id
+     * @return void
+    */
+    public function destroy(int $id)
+    {
+        Classroom::find($id)->delete();
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
+        ]);
     }
 }
