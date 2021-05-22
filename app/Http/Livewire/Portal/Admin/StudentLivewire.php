@@ -38,7 +38,7 @@ class StudentLivewire extends Component
     
     /**
      * [Input] Student ID (NIS / NIM)
-     * @var mixed $nip
+     * @var mixed $studentID
     */
     $studentID,
 
@@ -82,7 +82,13 @@ class StudentLivewire extends Component
      * Protected User ID
      * @var int|null $userID
     */
-    $userID;
+    $userID,
+    
+    /**
+     * Gender
+     * @var int $gender
+    */
+    $gender;
 
     /**
      * Render Component
@@ -91,12 +97,14 @@ class StudentLivewire extends Component
     public function render()
     {
         $search = $this->search;
+        $u = new User();
 
         return view('livewire.portal.admin.student-livewire', [
             'siswa' => Student::where('active', 1)
             ->whereHas('user', function($q) use ($search) {
                 if ($search) return $q->where('name', 'like', "%$search%'");
-            })->paginate($this->paginate)
+            })->paginate($this->paginate),
+            'genders' => $u->getGenders()
         ]);
     }
     
@@ -107,13 +115,13 @@ class StudentLivewire extends Component
     protected function rules() {
         return [
             'name' => 'required|string',
-            'nip' => 'integer',
             'email' => ['required','email', Rule::unique(User::class)->ignore($this->userID) ],
             'tempatLahir' => 'required|string',
             'tanggalLahir' => 'required|date',
             'phone_number' => 'required|regex:/(62)[0-9]{9,15}/',
             'address' => 'required',
-            'studentID' => ['required', Rule::unique(Student::class)->ignore($this->userID, 'user_id') ]
+            'studentID' => ['required', Rule::unique(Student::class, 'id')->ignore($this->userID, 'user_id') ],
+            'gender' => ['required','integer', Rule::in([1,2])]
         ];
     }
 
@@ -135,16 +143,17 @@ class StudentLivewire extends Component
             $this->tanggalLahir,
             $this->phone_number,
             $this->address,
-            $this->student->user->password
+            $this->student->user->password ?? null,
+            $this->gender
         );
 
-        // Update Teacher Side
+        // Update Student Side
         Student::updateOrCreate(
             ['user_id' => $this->userID],
             ['id' => $this->studentID, 'user_id' => $id
         ]);
 
-        $this->teachID = $this->userID = null;
+        $this->studentID = $this->userID = null;
 
         // Trigger Save
         $this->emit('saved');

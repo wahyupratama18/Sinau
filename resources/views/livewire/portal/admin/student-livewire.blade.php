@@ -17,6 +17,7 @@ class="py-12 mx-auto px-6">
                         <tr>
                             <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
                             <th class="border border-gray-600 p-2" style="width: 60%;">Nama</th>
+                            <th class="border border-gray-600 p-2">Jenis Kelamin</th>
                             <th class="border border-gray-600 p-2">Opsi</th>
                         </tr>
                     </x-slot>
@@ -25,15 +26,13 @@ class="py-12 mx-auto px-6">
                             <tr>
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
+                                <td class="border border-gray-600 p-2">{{ $value->user->my_gender }}</td>
                                 <td class="border border-gray-600 p-2">
                                     <x-jet-button
                                     wire:click="setID({{ $value->id }})"
                                     @click="view = 2"
                                     class="bg-yellow-500 hover:bg-yellow-600 mb-2">
                                         Edit Profil
-                                    </x-jet-button>
-                                    <x-jet-button wire:click="changePermission({{ $value->id }})" wire:loading.attr="disabled">
-                                        Ubah Kewenangan
                                     </x-jet-button>
                                     @if ($value->user_id != Auth::id())    
                                     <x-jet-danger-button wire:click="destroy({{ $value->id }})">
@@ -45,7 +44,7 @@ class="py-12 mx-auto px-6">
                             </tr>
                         @empty
                         <tr>
-                            <td class="p-2 text-center" colspan="3">Data tidak tersedia</td>
+                            <td class="p-2 text-center" colspan="100%">Data tidak tersedia</td>
                         </tr>
                         @endforelse
                     </x-slot>
@@ -62,11 +61,11 @@ class="py-12 mx-auto px-6">
                             <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" />
                             <x-jet-input-error for="name" class="mt-2" />
                         </div>
-                        {{-- NIP --}}
+                        {{-- NIS --}}
                         <div class="col-span-6 sm:col-span-3">
-                            <x-jet-label for="nip" value="{{ __('NIP') }}" />
-                            <x-jet-input id="nip" type="text" class="mt-1 block w-full" wire:model.defer="nip" />
-                            <x-jet-input-error for="nip" class="mt-2" />
+                            <x-jet-label for="studentID" value="{{ __('NIS') }}" />
+                            <x-jet-input id="studentID" type="text" class="mt-1 block w-full" wire:model.defer="studentID" />
+                            <x-jet-input-error for="studentID" class="mt-2" />
                         </div>
                         {{-- Email --}}
                         <div class="col-span-6 sm:col-span-3">
@@ -92,17 +91,31 @@ class="py-12 mx-auto px-6">
                             <x-jet-input id="phone_number" type="number" class="mt-1 block w-full" wire:model.defer="phone_number" />
                             <x-jet-input-error for="phone_number" class="mt-2" />
                         </div>
-                        <div class="col-span-6">
+                        {{-- Alamat --}}
+                        <div class="col-span-6 sm:col-span-3">
                             <x-jet-label for="address">{{ __('Alamat') }}</x-jet-label>
                             <textarea wire:model.defer="address" class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                             <x-jet-input-error for="address" class="mt-2" />
+                        </div>
+                        {{-- Gender --}}
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-jet-label for="gender">{{ __('Jenis Kelamin') }}</x-jet-label>
+                            <x-select.single wire:model="gender">
+                                <x-slot name="options">
+                                    <option placeholder>Pilih Jenis Kelamin</option>
+                                    @foreach ($genders as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </x-slot>
+                            </x-select.single>
+                            <x-jet-input-error for="gender" class="mt-2" />
                         </div>
                     </div>
 
                     {{-- Submission --}}
                     <div class="flex items-center justify-end px-4 py-3 text-right ">
                         <x-jet-button wire:loading.attr="disabled">
-                            {{ __('Save') }}
+                            {{ __('Simpan') }}
                         </x-jet-button>
                     </div>
                     {{-- End Submission --}}
@@ -111,38 +124,5 @@ class="py-12 mx-auto px-6">
         </div>
     </div>
 
-    {{-- Modal Here --}}
-    {{-- <x-jet-dialog-modal wire:model="permission">
-        <x-slot name="title">
-            {{ __('Ubah Kewenangan') }}
-        </x-slot>
-
-        <x-slot name="content">
-            {{ __('Pilih kewenangan untuk pengguna.') }}
-
-            <div class="mt-4">
-                <x-select.multiple wire:model="access" selectID="acc" :options="$role" :select="[]">
-                    <x-slot name="options">
-                        <option placeholder>Pilih hak akses</option>
-                        @foreach ($role as $key => $val)
-                            <option value="{{ $key }}">{{ $val }}</option>
-                        @endforeach
-                    </x-slot>
-                </x-select.multiple>
-
-                <x-jet-input-error for="access" class="mt-2" />
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('permission')" wire:loading.attr="disabled">
-                {{ __('Batalkan') }}
-            </x-jet-secondary-button>
-
-            <x-jet-button class="ml-2" wire:click="updatePermission" wire:loading.attr="disabled">
-                {{ __('Simpan') }}
-            </x-jet-button>
-        </x-slot>
-    </x-jet-dialog-modal> --}}
 </menu>
 <x-asset-pusher :css="css('choices')" :js="js('choices')"/>

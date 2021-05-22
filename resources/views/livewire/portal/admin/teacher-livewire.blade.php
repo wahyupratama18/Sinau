@@ -16,7 +16,8 @@ class="py-12 mx-auto px-6">
                     <x-slot name="thead">
                         <tr>
                             <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
-                            <th class="border border-gray-600 p-2" style="width: 60%;">Nama</th>
+                            <th class="border border-gray-600 p-2" style="width: 50%;">Nama</th>
+                            <th class="border border-gray-600 p-2">Jenis Kelamin</th>
                             <th class="border border-gray-600 p-2">Kewenangan</th>
                             <th class="border border-gray-600 p-2">Opsi</th>        
                         </tr>
@@ -26,6 +27,7 @@ class="py-12 mx-auto px-6">
                             <tr>
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $value->user->name }}</td>
+                                <td class="border border-gray-600 p-2">{{ $value->user->my_gender }}</td>
                                 <td class="border border-gray-600 p-2">
                                     <ol class="list-disc ml-4">
                                         @foreach ($value->role as $tRole)
@@ -53,7 +55,7 @@ class="py-12 mx-auto px-6">
                             </tr>
                         @empty
                         <tr>
-                            <td class="p-2 text-center" colspan="4">Data tidak tersedia</td>
+                            <td class="p-2 text-center" colspan="100%">Data tidak tersedia</td>
                         </tr>
                         @endforelse
                     </x-slot>
@@ -100,10 +102,24 @@ class="py-12 mx-auto px-6">
                             <x-jet-input id="phone_number" type="number" class="mt-1 block w-full" wire:model.defer="phone_number" />
                             <x-jet-input-error for="phone_number" class="mt-2" />
                         </div>
-                        <div class="col-span-6">
+                        {{-- Alamat --}}
+                        <div class="col-span-6 sm:col-span-3">
                             <x-jet-label for="address">{{ __('Alamat') }}</x-jet-label>
                             <textarea wire:model.defer="address" class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                             <x-jet-input-error for="address" class="mt-2" />
+                        </div>
+                        {{-- Gender --}}
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-jet-label for="gender">{{ __('Jenis Kelamin') }}</x-jet-label>
+                            <x-select.single wire:model="gender">
+                                <x-slot name="options">
+                                    <option placeholder>Pilih Jenis Kelamin</option>
+                                    @foreach ($genders as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </x-slot>
+                            </x-select.single>
+                            <x-jet-input-error for="gender" class="mt-2" />
                         </div>
                     </div>
 

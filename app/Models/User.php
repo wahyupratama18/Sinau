@@ -31,7 +31,8 @@ class User extends Authenticatable
         'address',
         'phone_number',
         'tempatLahir',
-        'tanggalLahir'
+        'tanggalLahir',
+        'gender'
     ];
 
     /**
@@ -63,7 +64,16 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'my_gender'
     ];
+
+
+    /**
+     * Genders Data
+     * @var string[] $genders
+    */
+    private $genders = [1 => 'Laki-Laki', 2 => 'Perempuan'];
+
 
     /**
      * Is Student
@@ -82,6 +92,22 @@ class User extends Authenticatable
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
+    }
+
+
+    /**
+     * Get Gender Attribute
+     * @return string
+    */
+    public function getMyGenderAttribute()
+    {
+        return $this->genders[$this->gender];
+    }
+
+
+    public function getGenders()
+    {
+        return $this->genders;
     }
 
 

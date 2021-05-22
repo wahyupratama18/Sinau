@@ -20,6 +20,7 @@ trait CreateUser
      * @param int $num
      * @param string $addr
      * @param mixed|null $pass
+     * @param int $gender
      * @return mixed
     */
     public static function createNew(
@@ -30,7 +31,8 @@ trait CreateUser
         $dob,
         int $num,
         string $addr,
-        $pass = null
+        $pass = null,
+        int $gender = 2
     ) {
         return User::updateOrCreate(
             ['id' => $id],
@@ -41,7 +43,8 @@ trait CreateUser
                 'tanggalLahir' => $dob,
                 'phone_number' => $num,
                 'address' => $addr,
-                'password' => $pass ?? Hash::make(date('dmY', strtotime($dob)))
+                'password' => $pass ?? Hash::make(date('dmY', strtotime($dob))),
+                'gender' => $gender
             ]
         )->id;
     }

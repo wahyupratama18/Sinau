@@ -102,7 +102,13 @@ class TeacherLivewire extends Component
      * Permission Access
      * @var array $access
     */
-    $access;
+    $access,
+    
+    /**
+     * Gender
+     * @var int $gender
+    */
+    $gender;
 
 
     /**
@@ -112,6 +118,7 @@ class TeacherLivewire extends Component
     public function render()
     {
         $search = $this->search;
+        $u = new User();
 
         return view('livewire.portal.admin.teacher-livewire', [
             'teach' => Teacher::with('role')
@@ -119,6 +126,7 @@ class TeacherLivewire extends Component
                 if ($search) return $q->where('name', 'like', "%$search%'");
             })->paginate($this->paginate),
             'role' => $this->role,
+            'genders' => $u->getGenders()
         ]);
     }
 
@@ -134,7 +142,8 @@ class TeacherLivewire extends Component
             'tempatLahir' => 'required|string',
             'tanggalLahir' => 'required|date',
             'phone_number' => 'required|regex:/(62)[0-9]{9,15}/',
-            'address' => 'required'
+            'address' => 'required',
+            'gender' => ['required','integer', Rule::in([1,2])]
         ];
 
     }
@@ -157,7 +166,8 @@ class TeacherLivewire extends Component
             $this->tanggalLahir,
             $this->phone_number,
             $this->address,
-            $this->teacher->user->password
+            $this->teacher->user->password ?? null,
+            $this->gender
         );
 
         // Update Teacher Side
