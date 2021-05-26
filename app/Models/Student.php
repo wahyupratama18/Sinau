@@ -41,4 +41,14 @@ class Student extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    /**
+     * Classrooms
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function classroom()
+    {
+        return $this->hasMany(StudentClassroom::class);
+    }
 }

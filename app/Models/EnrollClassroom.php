@@ -26,4 +26,15 @@ class EnrollClassroom extends Model
         'classroom_history_id' => 'integer',
         'announcement' => 'string'
     ];
+
+
+    /**
+     * Enroll
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function enroll()
+    {
+        return $this->belongsTo(Enroll::class);
+    }
+
 }

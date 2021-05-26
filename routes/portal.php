@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Livewire\Portal\Admin\{
     ClassroomLivewire,
     CourseLivewire,
@@ -54,6 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
+
     Route::middleware('teacher:2')->group(function () {
         
     });
@@ -61,5 +63,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('siswa')->name('report')->group(function () {
 
         Route::get('/report', ReportLivewire::class)->name('report');
+    });
+
+    // Axios Request
+    Route::prefix('api')->name('api.')->group(function () {
+        Route::middleware('teacher:1')->group(function () {
+            Route::get('enroll', [AdminController::class, 'enroll'])->name('enrollBySemester');
+        });
     });
 });

@@ -13,7 +13,7 @@ class StudentClassroom extends Model
      * Fillables
     */
     protected $fillable = [
-        'classroom_history_id',
+        'history_id',
         'student_id'
     ],
 
@@ -21,7 +21,27 @@ class StudentClassroom extends Model
      * Casting
     */
     $casts = [
-        'classroom_history_id' => 'integer',
+        'history_id' => 'integer',
         'student_id' => 'integer'
     ];
+
+
+    /**
+     * Student Data
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+
+    /**
+     * History
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function history()
+    {
+        return $this->belongsTo(ClassroomHistory::class);
+    }
 }

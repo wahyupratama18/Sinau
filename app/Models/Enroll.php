@@ -28,4 +28,23 @@ class Enroll extends Model
         'teacher_id' => 'integer',
         'course_increment' => 'integer'
     ];
+
+
+    /**
+     * My Course
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    /**
+     * Teachers
+    */
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
 }

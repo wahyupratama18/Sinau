@@ -28,4 +28,10 @@ class ClassroomHistory extends Model
         'year_id' => 'integer',
         'teacher_id' => 'integer'
     ];
+
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 }

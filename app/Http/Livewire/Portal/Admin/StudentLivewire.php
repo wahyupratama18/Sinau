@@ -6,7 +6,10 @@ use App\Models\{
     Student,
     User
 };
-use App\Traits\CreateUser;
+use App\Traits\{
+    CreateUser,
+    StudentTraits
+};
 use Illuminate\Validation\Rule;
 use Livewire\{
     Component,
@@ -15,7 +18,9 @@ use Livewire\{
 
 class StudentLivewire extends Component
 {
-    use WithPagination, CreateUser;
+    use CreateUser,
+    StudentTraits,
+    WithPagination;
 
 
     /**
@@ -96,14 +101,10 @@ class StudentLivewire extends Component
     */
     public function render()
     {
-        $search = $this->search;
         $u = new User();
-
         return view('livewire.portal.admin.student-livewire', [
-            'siswa' => Student::where('active', 1)
-            ->whereHas('user', function($q) use ($search) {
-                if ($search) return $q->where('name', 'like', "%$search%'");
-            })->paginate($this->paginate),
+            'siswa' => $this->finder($this->search)
+            ->paginate($this->paginate),
             'genders' => $u->getGenders()
         ]);
     }

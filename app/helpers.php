@@ -1,13 +1,27 @@
 <?php
 // custom helper by Wahyu Pratama
 if (!function_exists('basedURL')) {
+
+	/**
+	 * Subdomain URL Router
+	 * @param string $sub
+	 * @return mixed
+	*/
 	function basedURL($sub=''){
 		return str_replace('://', '://'.$sub.($sub ? '.' : ''), env('APP_URL'));
 	}
 }
 
 if (!function_exists('returner')) {
-	function returner($resource,$need){
+
+	/**
+	 * Asset Compiler
+	 * @param array $resource
+	 * @param array $need
+	 * @return array
+	 * 
+	*/
+	function returner(array $resource, array $need){
 		$data = [];
 		foreach ($need as $key) {
 			switch (true) {
@@ -27,8 +41,14 @@ if (!function_exists('returner')) {
 		return $data;
 	}
 }
+
 if (!function_exists('css')) {
 
+	/**
+	 * CSS assets
+	 * @param mixed ...$array
+	 * @return array
+	*/
 	function css(...$array){
 
 		return returner([
@@ -46,7 +66,14 @@ if (!function_exists('css')) {
 
 	}
 }
+
 if (!function_exists('js')) {
+
+	/**
+	 * JS Assets
+	 * @param mixed ...$array
+	 * @return array
+	*/
 	function js(...$array){
 
 		return returner([
@@ -73,5 +100,18 @@ if (!function_exists('js')) {
 			'choices' => 'https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js'
 		],$array);
 
+	}
+}
+
+if (!function_exists('randText')) {
+
+	/**
+	 * Generate Random String (Without Numeric, Use Str::random() instead if you need numeric too)
+	 * @param int $len
+	 * @return string
+	*/
+	function randText($len=6)
+	{
+		return substr(str_replace(['+', '/', '=', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0], '', base64_encode(random_bytes(32))), 0, $len);
 	}
 }

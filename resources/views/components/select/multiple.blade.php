@@ -1,19 +1,33 @@
 <div x-data="{}" wire:ignore x-init="() => {
 
-    let choices = new Choices($refs.{{ $id }}, {
+    let {{ $id }} = new Choices($refs.{{ $id }}, {
         itemSelectText: '',
         removeItemButton:true
     })
-    choices.passedElement.element.addEventListener('change', e => {
+    {{ $id }}.passedElement.element.addEventListener('change', e => {
         @this.set('{{ $attributes['wire:model'] }}', getSelectedValues($refs.{{ $id }}))
     }, false)
     items = {!! $attributes['selected'] ?? 'null' !!}
 
     if(Array.isArray(items)){
         items.forEach(s => {
-            choices.setChoiceByValue((s).toString())
+            {{ $id }}.setChoiceByValue((s).toString())
         })
     }
+
+    @if ($search)
+        let search = null
+        {{ $id }}.passedElement.element.addEventListener('search', e => {
+            if (e.detail.value.length > 0 && search !== e.detail.value){
+                axios.get('{{ $search }}', {
+                    params: @if ($sParam) {{ $sParam }} @else { search: e.detail.value } @endif
+                }).then(result => {
+                    {{ $id }}.setChoices(result.data,'id','text', true)._handleSearch(e.detail.value)
+                })
+                search = e.detail.value
+            }
+        })
+    @endif
 }
 getSelectedValues = select => {
     let result = [],

@@ -2,7 +2,6 @@
 
 namespace App\View\Components\Select;
 
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class Multiple extends Component
@@ -11,16 +10,23 @@ class Multiple extends Component
      * UUID
      * @var mixed $id
     */
-    public $id;
+    public $id,
+    
+    /**
+     * API Search
+     * @var mixed|null $search
+    */
+    $search = null;
 
     /**
      * Create a new component instance.
-     *
+     * @param mixed|null $search
      * @return void
      */
-    public function __construct()
+    public function __construct($search=null)
     {
-        $this->id = Str::random(12);
+        $this->id = randText();
+        $this->search = $search;
     }
 
     /**
