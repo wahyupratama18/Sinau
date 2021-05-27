@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('api')->name('api.')->group(function () {
         Route::middleware('teacher:1')->group(function () {
             Route::get('enroll', [AdminController::class, 'enroll'])->name('enrollBySemester');
+            Route::get('siswa', [AdminController::class, 'siswa'])->name('siswaByYear');
         });
     });
 });

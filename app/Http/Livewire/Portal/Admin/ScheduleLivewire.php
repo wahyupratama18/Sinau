@@ -7,7 +7,9 @@ use App\Models\{
     ClassroomHistory,
     Enroll,
     EnrollClassroom,
-    Semester
+    EnrollSchedule,
+    Semester,
+    TimeSchedule
 };
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
@@ -57,7 +59,13 @@ class ScheduleLivewire extends Component
      * Enroll ID Creation
      * @var int[] $enroll_id
     */
-    $enroll_id;
+    $enroll_id,
+    
+    /**
+     * Time ID
+     * @var int $time_id
+    */
+    $time_id;
 
 
     /**
@@ -91,8 +99,11 @@ class ScheduleLivewire extends Component
                 ->with('course')
                 ->with('teacher.user')
                 ->where('semester_id', $sem->id);
-            })->paginate($this->paginate)
-            : []
+            })->with('schedule.time')
+            ->paginate($this->paginate)
+            : [],
+            'time' => TimeSchedule::orderBy('day')
+            ->orderBy('ordered')->get()
         ]);
     }
     
@@ -102,7 +113,7 @@ class ScheduleLivewire extends Component
     */
     protected function rules() {
         return [
-            'enroll_id' => 'required|array',
+            'enroll_id' => 'required|array|min:1',
             'enroll_id.*' => ['required', Rule::exists(Enroll::class, 'id') ]
         ];
     }
@@ -117,7 +128,7 @@ class ScheduleLivewire extends Component
 
         foreach ($this->enroll_id as $key) {
 
-            EnrollClassroom::create([
+            EnrollClassroom::updateOrCreate([
                 'enroll_id' => $key,
                 'classroom_history_id' => $this->selectedClass->id
             ]);
@@ -151,6 +162,50 @@ class ScheduleLivewire extends Component
     public function destroy(int $id)
     {
         EnrollClassroom::findOrFail($id)->delete();
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
+        ]);
+    }
+
+
+    /**
+     * New Time Schedule
+     * @return void
+    */
+    public function newTime()
+    {
+        $this->validate([
+            'time_id' => 'required|array|min:1',
+            'time_id.*' => ['required', Rule::exists(TimeSchedule::class, 'id')]
+        ]);
+
+        foreach ($this->time_id as $key) {
+            EnrollSchedule::updateOrCreate([
+                'enroll_classroom_id' => $this->enrollID,
+                'time_schedule_id' => $key
+            ]);
+        }
+
+        $this->emit('saved');
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah tersimpan'
+        ]);
+
+    }
+
+
+    /**
+     * Remove Schedule
+     * @param int $id
+     * @return void
+    */
+    public function removeSchedule(int $id)
+    {
+        EnrollSchedule::findOrFail($id)->delete();
 
         $this->dispatchBrowserEvent('alert', [
             'type' => 'success',

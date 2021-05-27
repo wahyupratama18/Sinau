@@ -24,4 +24,14 @@ class EnrollSchedule extends Model
         'enroll_classroom_id' => 'integer',
         'time_schedule_id' => 'integer'
     ];
+
+
+    /**
+     * Time Schedules
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function time()
+    {
+        return $this->belongsTo(TimeSchedule::class, 'time_schedule_id');
+    }
 }

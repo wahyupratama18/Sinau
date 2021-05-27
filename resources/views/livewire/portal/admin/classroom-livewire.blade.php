@@ -1,5 +1,7 @@
 <menu x-data="{view: 1}"
-x-init="@this.on('saved', () => { view = 1 })"
+x-init="
+@this.on('saved', () => { view = 1 })
+@this.on('savedSiswa', () => view = 3)"
 class="py-12 mx-auto px-6">
     {{-- Stop trying to control. --}}
     <div class="bg-white shadow-md rounded-lg">
@@ -151,6 +153,7 @@ class="py-12 mx-auto px-6">
                         <tr>
                             <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
                             <th class="border border-gray-600 p-2">Nama Siswa</th>
+                            <th class="border border-gray-600 p-2">Opsi</th>
                         </tr>
                     </x-slot>
 
@@ -159,6 +162,11 @@ class="py-12 mx-auto px-6">
                             <tr>
                                 <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
                                 <td class="border border-gray-600 p-2">{{ $val->user->name }}</td>
+                                <td class="border border-gray-600 p-2">
+                                    <x-jet-danger-button wire:click="removeStudent({{ $val->classroom[0]->id }})">
+                                        Hapus dari Kelas
+                                    </x-jet-danger-button>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -169,6 +177,29 @@ class="py-12 mx-auto px-6">
 
                     <x-slot name="links">{{ $siswa ? $siswa->links() : null }}</x-slot>
                 </x-tables>
+            </div>
+
+            <div x-show="view == 4">
+
+                <form wire:submit.prevent="saveSiswa">
+                    <div class="px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+                        <div class="col-span-6">
+                            <x-jet-label for="students">Pilih Siswa</x-jet-label>
+                            <x-select.multiple wire:model="students" :search="route('api.siswaByYear')">
+                                <x-slot name="sParam">{ search: e.detail.value, year: @this.get('yearSelection') }</x-slot>
+                            </x-select.multiple>
+                            <x-jet-input-error for="students" class="mt-2" />
+                        </div>
+                    </div>
+                    {{-- Submission --}}
+                    <div class="flex items-center justify-end px-4 py-3 text-right ">
+                        <x-jet-button wire:loading.attr="disabled">
+                            {{ __('Simpan') }}
+                        </x-jet-button>
+                    </div>
+                    {{-- End Submission --}}
+                </form>
+
             </div>
         </div>
     </div>

@@ -37,4 +37,13 @@ class EnrollClassroom extends Model
         return $this->belongsTo(Enroll::class);
     }
 
+
+    /**
+     * Schedules
+    */
+    public function schedule()
+    {
+        return $this->hasMany(EnrollSchedule::class);
+    }
+
 }

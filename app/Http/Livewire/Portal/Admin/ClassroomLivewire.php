@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Portal\Admin;
 
-use App\Models\{Classroom, ClassroomHistory, Department, Teacher, Year};
+use App\Models\{Classroom, ClassroomHistory, Department, Student, StudentClassroom, Teacher, Year};
 use App\Traits\StudentTraits;
 use Illuminate\Validation\Rule;
 use Livewire\{Component, WithPagination};
@@ -77,6 +77,10 @@ class ClassroomLivewire extends Component
     */
     $currentTeacher = null,
     
+    /**
+     * History
+     * @var App\Models\History $history
+    */
     $history;
 
 
@@ -210,4 +214,55 @@ class ClassroomLivewire extends Component
             'message' => 'Data telah tersimpan'
         ]);
     }
+
+
+    /**
+     * Set Siswa To Class
+    */
+    public function saveSiswa()
+    {
+        $this->validate([
+            'students' => 'required|array|min:1',
+            'students.*' => ['required', Rule::exists(Student::class, 'id')->where('active', 1)]
+        ]);
+
+        $avoid = ClassroomHistory::select('id')
+        ->where('year_id', $this->history->year_id)
+        ->where('id', '!=', $this->history->id)
+        ->get()->pluck('id')->toArray();
+
+        foreach ($this->students as $key) {
+            // Removed old one
+            StudentClassroom::whereIn('history_id', $avoid)
+            ->where('student_id', $key)->delete();
+
+            // Start new
+            StudentClassroom::updateOrCreate([
+                'history_id' => $this->history->id,
+                'student_id' => $key
+            ]);
+        }
+
+        $this->emit('savedSiswa');
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah tersimpan'
+        ]);
+
+    }
+
+
+    /**
+     * Remove Student
+    */
+    public function removeStudent(int $id)
+    {
+        StudentClassroom::findOrFail($id)->delete();
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'Data telah terhapus'
+        ]);
+    }
+
 }

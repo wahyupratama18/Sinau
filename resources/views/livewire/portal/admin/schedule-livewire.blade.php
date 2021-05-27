@@ -52,7 +52,16 @@ class="py-12 mx-auto px-6">
                                 <td class="border border-gray-600 p-2">{{ $val->enroll->course->name }}</td>
                                 <td class="border border-gray-600 p-2">{{ '('.$val->enroll->course->abbr.$val->enroll->course_increment.') '.$val->enroll->teacher->user->name }}</td>
                                 <td class="border border-gray-600 p-2">
-
+                                    <ol>
+                                        @foreach ($val->schedule as $sch)
+                                            <li>
+                                                <span>
+                                                    {{ $sch->time->day_name.' '.$sch->time->ordered.' ('.$sch->time->time_start.' - '.$sch->time->time_end.')' }}
+                                                    <i class="mdi mdi-trash-can-outline text-red-500 cursor-pointer" wire:click="removeSchedule({{ $sch->id }})"></i>
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ol>
                                 </td>
                                 <td class="border border-gray-600 p-2">
                                     <x-jet-button
@@ -107,59 +116,36 @@ class="py-12 mx-auto px-6">
 
             <div x-show="view == 3">
 
-                <x-select.single wire:model="yearSelection">
-                    <x-slot name="options">
-                        <option placeholder>Pilih tahun pelajaran</option>
-                        {{-- @foreach ($years as $key)
-                            <option value="{{ $key->id }}">{{ $key->start.'/'.$key->end }}</option>
-                        @endforeach --}}
-                    </x-slot>
-                </x-select.single>
+                <form wire:submit.prevent="newTime">
+                    <div class="px-4 py-5 sm:p-6 grid grid-cols-3 gap-6">
 
-                <form wire:submit.prevent="setWali" class="my-4 px-6 border border-gray-500 rounded-lg py-4">
-                    <div class="mb-3">
-                        <x-jet-label>Wali Kelas Saat Ini:</x-jet-label>
-                        <x-jet-input type="text" class="mt-1 block w-full" wire:model="currentTeacher" readonly />
+                        {{-- Jam Baru --}}
+                        <div class="col-span-3">
+                            <x-jet-label for="time_id" value="{{ __('Pilih Jam') }}" />
+                            
+                            <x-select.multiple wire:model="time_id">
+                                <x-slot name="options">
+                                    <option placeholder>Pilih tahun pelajaran</option>
+                                    @foreach ($time as $key)
+                                        <option value="{{ $key->id }}">{{ "$key->day_name $key->ordered ($key->time_start - $key->time_end)" }}</option>
+                                    @endforeach
+                                </x-slot>
+                            </x-select.multiple>
+
+                            <x-jet-input-error for="time_id" class="mt-2" />
+                        </div>
+
                     </div>
-                    <x-jet-label for="teacher">Pilih Wali Kelas</x-jet-label>
-                    <x-select.single wire:model="teacher">
-                        <x-slot name="options">
-                            <option placeholder>Pilih wali kelas</option>
-                            {{-- @foreach ($teach as $key)
-                                <option value="{{ $key->id }}">{{ $key->user->name }}</option>
-                            @endforeach --}}
-                        </x-slot>
-                    </x-select.single>
+
+                    {{-- Submission --}}
                     <div class="flex items-center justify-end px-4 py-3 text-right ">
                         <x-jet-button wire:loading.attr="disabled">
                             {{ __('Simpan') }}
                         </x-jet-button>
                     </div>
+                    {{-- End Submission --}}
                 </form>
 
-                {{-- <x-tables>
-                    <x-slot name="thead">
-                        <tr>
-                            <th class="border border-gray-600 p-2" style="width: 5%;">No</th>
-                            <th class="border border-gray-600 p-2">Nama Siswa</th>
-                        </tr>
-                    </x-slot>
-
-                    <x-slot name="tbody">
-                        @forelse ($siswa as $key => $val)
-                            <tr>
-                                <td class="border border-gray-600 p-2">{{ 1 + $key }}</td>
-                                <td class="border border-gray-600 p-2">{{ $val->user->name }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="p-2 text-center" colspan="3">Data tidak tersedia</td>
-                            </tr>
-                        @endforelse
-                    </x-slot>
-
-                    <x-slot name="links">{{ $siswa ? $siswa->links() : null }}</x-slot>
-                </x-tables> --}}
             </div>
         </div>
     </div>
