@@ -4,19 +4,18 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-            integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-            crossorigin="anonymous">
+
         <link
             href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
             rel="stylesheet">
             
+        <link rel="stylesheet" href="{{ mix('css/pinterapp.css') }}">    
         <link rel="stylesheet" type="text/css" href="{{ asset("css/$css") }}">
-        <title>Document</title>
+        <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
         @stack('css')
+
+        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body>
         {{-- @guest --}}

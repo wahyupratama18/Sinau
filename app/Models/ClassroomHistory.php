@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 
 class ClassroomHistory extends Model
 {
-    use HasFactory;
 
     use HasFactory, SoftDeletes;
 
@@ -30,8 +29,43 @@ class ClassroomHistory extends Model
     ];
 
 
+    /**
+     * Teacher
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
     }
+
+
+    /**
+     * Classroom
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
+
+
+    /**
+     * Year
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
+
+    /**
+     * Students Classroom
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function stClass()
+    {
+        return $this->hasMany(StudentClassroom::class, 'history_id');
+    }
+
 }

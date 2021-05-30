@@ -29,15 +29,19 @@ class SideDrop extends Component
     /**
      * Create a new component instance.
      *
+     * @param string $title
+     * @param string|null $href
+     * @param array $sub
+     * @param array $param
      * @return void
      */
-    public function __construct(string $title, string $href = null, array $sub = [])
+    public function __construct(string $title, string $href = null, array $sub = [], array $param = [])
     {
         $this->title = $title;
         if ($sub) {
             $this->href = Str::uuid();
             $this->sub = $sub;
-        } else $this->href = route($href);
+        } else $this->href = route($href, $param);
     }
 
     /**

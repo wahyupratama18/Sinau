@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\{Locale, SiswaOnly, TeacherLimitate};
+use App\Http\Middleware\{GancangPinterPermission, Locale, SiswaOnly, TeacherLimitate};
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'teacher' => TeacherLimitate::class,
         'siswa' => SiswaOnly::class,
+        'permission' => GancangPinterPermission::class
     ];
 }

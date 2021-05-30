@@ -14,7 +14,7 @@ class EnrollClassroom extends Model
     */
     protected $fillable = [
         'enroll_id',
-        'classroom_history_id',
+        'history_id',
         'announcement'
     ],
 
@@ -23,7 +23,7 @@ class EnrollClassroom extends Model
     */
     $casts = [
         'enroll_id' => 'integer',
-        'classroom_history_id' => 'integer',
+        'history_id' => 'integer',
         'announcement' => 'string'
     ];
 
@@ -40,10 +40,21 @@ class EnrollClassroom extends Model
 
     /**
      * Schedules
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
     */
     public function schedule()
     {
         return $this->hasMany(EnrollSchedule::class);
+    }
+
+
+    /**
+     * Classroom History
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function history()
+    {
+        return $this->belongsTo(ClassroomHistory::class);
     }
 
 }

@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\GancangPinterController;
+use App\Http\Controllers\GancangPinter\{
+    EnrollController,
+    SemesterController
+};
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,108 +18,87 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GancangPinterController::class, 'index'])->name('landing');
+Route::get('/', [SemesterController::class, 'index'])->name('landing');
 
-Route::get('/about', [GancangPinterController::class, 'about'])->name('about');
+Route::view('/about', 'sinau.about')->name('about');
 
-Route::get('/guru', [GancangPinterController::class, 'guru'])->name('guru');
+Route::view('/guru', 'sinau.guru')->name('guru');
 
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('semester/{semester}', [SemesterController::class, 'semester'])
+    ->name('bySemester');
+
     
     /**
-     * Siswa Routes
+     * Enrollments
     */
-    Route::middleware('siswa')->group(function () {
-    
-        /**
-         * Enrollments
-        */
-        Route::prefix('/enroll')->group(function() {
+    Route::prefix('course/{enroll}')
+    ->middleware('permission')
+    ->name('course.')->group(function() {
+          
+        Route::get('/', [EnrollController::class, 'index'])->name('enroll');
+        
+        Route::get('create', function () {
             
-            /**
-             * View All
-            */
-            Route::get('/', function () {
-                return 'roll1';
+        })->middleware('teacher');
+
+        /**
+         * Meet
+        */
+        Route::prefix('meet/{meet}')->name('meet.')->whereNumber('meet')->group(function () {
+            
+            Route::get('/', function ($enroll) {
+                return $enroll;
+            })->name('view');
+
+            Route::get('/presence', function ($enroll, $presence) {
+                return $presence;
+            })->name('presence');
+
+            Route::middleware('teacher')->group(function () {
+               Route::get('update', function () {
+                   
+               }); 
             });
-    
-            /**
-             * View by enroll id
-            */
-            Route::prefix('{id}')->group(function () {
-                
-                Route::get('/', function ($id) {
-                    return $id;
-                });
-    
-                /**
-                 * Presence
-                */
-                Route::prefix('presence')->group(function () {
-                    
-                    Route::get('/', function ($id) {
-                        return $id;
-                    });
-    
-                    Route::get('/{presence}', function ($id, $presence) {
-                        return $presence;
-                    });
-    
-                });
-    
-    
-            });
-    
+
         });
-    
-    
+
     });
     
     
     /**
      * Guru Routes
     */
-    Route::middleware('teacher')->group(function () {
-        /**
-         * Enrollments
-        */
-        Route::prefix('/enroll')->group(function() {
-            
-            /**
-             * View All
-            */
-            Route::get('/', function () {
-                return 'roll1';
-            });
-    
-            /**
-             * View by enroll id
-            */
-            Route::prefix('{id}')->group(function () {
+    // Route::middleware('teacher')->group(function () {
+        
+    //     /**
+    //      * Enrollments
+    //     */
+    //     Route::prefix('/course/{enroll}')
+    //     ->middleware('permission:1')
+    //     ->name('course.')->group(function() {
+
+    //         Route::get('/', function ($enroll) {
+    //             return $enroll;
+    //         })->name('enroll');
+
+    //         /**
+    //          * Presence
+    //         */
+    //         Route::prefix('presence')->group(function () {
                 
-                Route::get('/', function ($id) {
-                    return $id;
-                });
+    //             Route::get('/', function ($enroll) {
+    //                 return $enroll;
+    //             });
+
+    //             Route::get('/{presence}', function ($enroll, $presence) {
+    //                 return $presence;
+    //             });
+
+    //         });        
     
-                /**
-                 * Presence
-                */
-                Route::prefix('presence')->group(function () {
-                    
-                    Route::get('/', function ($id) {
-                        return $id;
-                    });
-    
-                    Route::get('/{presence}', function ($id, $presence) {
-                        return $presence;
-                    });
-    
-                });
-    
-    
-            });
-    
-        });
-    });
+    //     });
+    // });
 });

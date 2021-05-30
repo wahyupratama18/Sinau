@@ -41,10 +41,21 @@ class Enroll extends Model
 
     /**
      * Teachers
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
     */
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+
+    /**
+     * Semester
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
     }
 
 }
