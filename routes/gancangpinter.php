@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GancangPinter\{
     EnrollController,
+    MeetController,
     SemesterController
 };
 
@@ -34,71 +35,12 @@ Route::middleware('auth:sanctum')->group(function () {
     /**
      * Enrollments
     */
-    Route::prefix('course/{enroll}')
+    Route::resource('enroll', EnrollController::class)
     ->middleware('permission')
-    ->name('course.')->group(function() {
-          
-        Route::get('/', [EnrollController::class, 'index'])->name('enroll');
-        Route::post('/announcement', [EnrollController::class, 'announcement'])->name('announcement');
-        
-        Route::resource('/', EnrollController::class)->middleware('teacher')
-        ->only(['create', 'store', 'edit', 'update', 'destroy']);
+    ->only(['show', 'update']);
 
-        /**
-         * Meet
-        */
-        Route::prefix('meet/{meet}')->name('meet.')->group(function () {
-            
-            Route::get('/', function ($enroll) {
-                return $enroll;
-            })->name('view');
+    Route::resource('enroll.meet', MeetController::class)
+    ->middleware('permission')
+    ->only(['create', 'store', 'show']);
 
-            Route::get('/presence', function ($enroll, $presence) {
-                return $presence;
-            })->name('presence');
-
-            Route::middleware('teacher')->group(function () {
-               Route::get('update', function () {
-                   
-               }); 
-            });
-
-        });
-
-    });
-    
-    
-    /**
-     * Guru Routes
-    */
-    // Route::middleware('teacher')->group(function () {
-        
-    //     /**
-    //      * Enrollments
-    //     */
-    //     Route::prefix('/course/{enroll}')
-    //     ->middleware('permission:1')
-    //     ->name('course.')->group(function() {
-
-    //         Route::get('/', function ($enroll) {
-    //             return $enroll;
-    //         })->name('enroll');
-
-    //         /**
-    //          * Presence
-    //         */
-    //         Route::prefix('presence')->group(function () {
-                
-    //             Route::get('/', function ($enroll) {
-    //                 return $enroll;
-    //             });
-
-    //             Route::get('/{presence}', function ($enroll, $presence) {
-    //                 return $presence;
-    //             });
-
-    //         });        
-    
-    //     });
-    // });
 });

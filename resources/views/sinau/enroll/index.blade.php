@@ -1,22 +1,22 @@
 <x-gancang-pinter.admin>
 
     <x-slot name="sidebar">
-        <x-gancangpinter.sidedrop href="course.enroll" :param="['enroll' => $course->id]" :title="$course->enroll->course->name"></x-gancangpinter.sidedrop>
+        <x-gancangpinter.sidedrop href="enroll.show" :param="['enroll' => $course->id]" :title="$course->enroll->course->name"></x-gancangpinter.sidedrop>
         @if (Auth::user()->teacher)
             <hr class="m-0">
-            <x-gancangpinter.sidedrop href="course.create" :param="['enroll' => $course->id]" title="Buat Pertemuan Baru"></x-gancangpinter.sidedrop>
+            <x-gancangpinter.sidedrop href="enroll.meet.create" :param="['enroll' => $course->id]" title="Buat Pertemuan Baru"></x-gancangpinter.sidedrop>
             <hr class="m-0">
         @endif
 
         <li class="mt-2" style="padding-left: 10px; font-size: 10px;">Daftar Pertemuan:</li>
         @foreach ($course->meet as $key => $val)
-            <x-gancangpinter.sidedrop href="course.meet.view" :param="['enroll' => $course->id, 'meet' => $val->id]" :title="'Pertemuan '.(1 + $key).' : '.$val->title"></x-gancangpinter.sidedrop>
+            <x-gancangpinter.sidedrop href="enroll.meet.show" :param="['enroll' => $course->id, 'meet' => $val->id]" :title="'Pertemuan '.(1 + $key).' : '.$val->title"></x-gancangpinter.sidedrop>
         @endforeach
     </x-slot>
 
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="{{ route('course.enroll', [
+            <a href="{{ route('enroll.show', [
                 'enroll' => $course->id
             ]) }}">{{ $course->enroll->course->name }}</a>
         </li>
@@ -45,9 +45,10 @@
 
         <article x-show="view == 1" data-aos="flip-down">{!! $course->announcement !!}</article>
         @if (Auth::user()->teacher)
-            <form x-show="view == 2" action="{{ route('course.announcement', ['enroll' => $course->id]) }}" method="post" style="display: none;">
+            <form x-show="view == 2" action="{{ route('enroll.update', ['enroll' => $course->id]) }}" method="post" style="display: none;">
+                @method('put')
                 @csrf
-                <textarea aria-label="Pengumuman" name="announcement" cols="30" rows="10"></textarea>
+                <textarea aria-label="Pengumuman" name="announcement" cols="30" rows="10">{!! $course->announcement !!}</textarea>
 
                 <div class="d-flex mt-4">
                     <button type="submit" class="btn btn-info ml-auto">

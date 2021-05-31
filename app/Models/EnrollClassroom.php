@@ -64,7 +64,7 @@ class EnrollClassroom extends Model
     */
     public function meet()
     {
-        return $this->hasMany(Meet::class);
+        return $this->hasMany(Meet::class)->orderBy('date');
     }
 
 }

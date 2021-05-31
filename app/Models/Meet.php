@@ -15,7 +15,11 @@ class Meet extends Model
     protected $fillable = [
         'enroll_classroom_id',
         'title',
-        'date'
+        'date',
+        'opened_at',
+        'closed_at',
+        'presence_opened',
+        'presence_closed'
     ],
 
     /**
@@ -24,6 +28,10 @@ class Meet extends Model
     $casts = [
         'enroll_classroom_id' => 'integer',
         'title' => 'string',
-        'date' => 'date'
+        'date' => 'date',
+        'opened_at' => 'datetime',
+        'closed_at' => 'datetime',
+        'presence_opened' => 'time',
+        'presence_closed' => 'time'
     ];
 }

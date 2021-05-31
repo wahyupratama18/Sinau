@@ -12,7 +12,7 @@
 
     <div class="row mt-3"> 
         @foreach ($lesson as $key)
-            <a href="{{ route('course.enroll', ['enroll' => $key->id]) }}" class="col-md-4 my-2" data-aos="flip-down" data-aos-easing="linear" data-aos-duration="500">
+            <a href="{{ route('enroll.show', ['enroll' => $key->id]) }}" class="col-md-4 my-2" data-aos="flip-down" data-aos-easing="linear" data-aos-duration="500">
                 <div class="bg-info w-full p-3 rounded shadow text-white d-flex align-items-center" style="min-height: 10rem;">
                     <div>
                         <h6>{{ '('.$key->enroll->course->abbr.$key->enroll->course_increment.') '.$key->enroll->course->name }}</h6>
