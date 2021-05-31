@@ -24,8 +24,10 @@
         "aos": "^2.3.4",
         "bootstrap": "^4.6.0",
         "choices.js": "^9.0.1",
+        "dropzone": "^5.9.2",
         "izitoast": "^1.4.0",
         "jquery": "^3.6.0",
-        "malihu-custom-scrollbar-plugin": "^3.1.5"
+        "malihu-custom-scrollbar-plugin": "^3.1.5",
+        "summernote": "^0.8.18"
     }
 }

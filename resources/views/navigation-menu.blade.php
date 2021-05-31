@@ -7,7 +7,6 @@
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex space-x-3">
                         <x-jet-application-mark class="block h-9 w-auto" />
-                        <h1 class="font-lg mt-1 font-semibold">Layanan Terpadu</h1>
                     </a>
                 </div>
 

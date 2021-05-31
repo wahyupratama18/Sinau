@@ -5,13 +5,13 @@
 
         <!-- Sidebar -->
         <nav id="sidebar">
-            <div class="sidebar-header">
-                <h3>
-                    <a href="{{ route('landing') }}">Gancang Pinter</a>
-                </h3>
+            <div class="sidebar-header pb-2">
+                <a href="{{ route('landing') }}">
+                    <img src="{{ asset('storage/logos/reel-legit/logo-reel-legit.png') }}" alt="" class="img-fluid" style="height: 50px;">
+                </a>
             </div>
 
-            <ul class="list-unstyled components" data-aos="fade-right">
+            <ul class="list-unstyled components">
                 {{ $sidebar }}
             </ul>
         </nav>

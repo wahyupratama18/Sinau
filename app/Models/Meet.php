@@ -13,7 +13,7 @@ class Meet extends Model
      * Fillables
     */
     protected $fillable = [
-        'enroll_class_id',
+        'enroll_classroom_id',
         'title',
         'date'
     ],
@@ -22,7 +22,7 @@ class Meet extends Model
      * Casting
     */
     $casts = [
-        'enroll_class_id' => 'integer',
+        'enroll_classroom_id' => 'integer',
         'title' => 'string',
         'date' => 'date'
     ];

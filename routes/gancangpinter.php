@@ -39,15 +39,15 @@ Route::middleware('auth:sanctum')->group(function () {
     ->name('course.')->group(function() {
           
         Route::get('/', [EnrollController::class, 'index'])->name('enroll');
+        Route::post('/announcement', [EnrollController::class, 'announcement'])->name('announcement');
         
-        Route::get('create', function () {
-            
-        })->middleware('teacher');
+        Route::resource('/', EnrollController::class)->middleware('teacher')
+        ->only(['create', 'store', 'edit', 'update', 'destroy']);
 
         /**
          * Meet
         */
-        Route::prefix('meet/{meet}')->name('meet.')->whereNumber('meet')->group(function () {
+        Route::prefix('meet/{meet}')->name('meet.')->group(function () {
             
             Route::get('/', function ($enroll) {
                 return $enroll;

@@ -57,4 +57,14 @@ class EnrollClassroom extends Model
         return $this->belongsTo(ClassroomHistory::class);
     }
 
+
+    /**
+     * Meets
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function meet()
+    {
+        return $this->hasMany(Meet::class);
+    }
+
 }

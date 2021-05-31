@@ -21,7 +21,7 @@ mix.js('resources/js/app.js', 'js')
 mix.js('resources/js/pinterapp.js', 'js')
     .postCss('resources/css/pinterapp.css', 'css', [
         require('postcss-import'),
-        // require('bootstrap')
+        require('summernote')
     ])
 
 if (mix.inProduction()) {
