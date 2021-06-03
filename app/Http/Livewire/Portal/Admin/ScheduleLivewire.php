@@ -93,7 +93,7 @@ class ScheduleLivewire extends Component
             ->orderByDesc('year_id')
             ->get(),
             'enrolls' => $this->selectedClass ?
-            EnrollClassroom::where('classroom_history_id', $this->selectedClass->id)
+            EnrollClassroom::where('history_id', $this->selectedClass->id)
             ->whereHas('enroll', function($q) use ($sem) {
                 return $q
                 ->with('course')
@@ -130,7 +130,7 @@ class ScheduleLivewire extends Component
 
             EnrollClassroom::updateOrCreate([
                 'enroll_id' => $key,
-                'classroom_history_id' => $this->selectedClass->id
+                'history_id' => $this->selectedClass->id
             ]);
 
         }

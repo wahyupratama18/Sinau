@@ -51,4 +51,13 @@ class Student extends Model
     {
         return $this->hasMany(StudentClassroom::class);
     }
+
+
+    /**
+     * Presensi
+    */
+    public function presensi()
+    {
+        return $this->hasMany(PresenceMeet::class);
+    }
 }

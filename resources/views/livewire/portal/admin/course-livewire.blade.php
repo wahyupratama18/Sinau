@@ -2,7 +2,7 @@
 x-init="@this.on('saved', () => { view = 1 })"
 class="py-12 mx-auto px-6">
     {{-- Stop trying to control. --}}
-    <div class="bg-white shadow-md rounded-lg">
+    <div class="bg-white shadow-md rounded-lg" data-aos="fade-up">
         <div class="p-3 bg-gray-600 rounded-t-lg text-white flex">
             <div x-show="view == 1" class="w-full flex justify-between items-center">
                 <h2>{{ __('Data Pelajaran') }}</h2>

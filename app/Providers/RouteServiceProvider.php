@@ -38,6 +38,11 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+            
+            $portal = Route::domain(basedURL('portal'))
+                    ->middleware('web')
+                    ->namespace($this->namespace);
+                    
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
@@ -48,10 +53,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
-            Route::domain(basedURL('portal'))
-                ->middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/portal.php'));
+            $portal->group(base_path('routes/portal.php'));
+            $portal->group(base_path('routes/jetstream.php'));
 
             Route::domain(basedURL('gancangpinter'))
                 ->middleware('web')

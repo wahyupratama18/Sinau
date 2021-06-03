@@ -1,6 +1,13 @@
 <?php
 
-use App\Http\Controllers\GancangPinterController;
+use App\Http\Controllers\GancangPinter\{
+    EnrollController,
+    MaterialController,
+    MeetController,
+    PresenceController,
+    SemesterController
+};
+use App\Http\Livewire\GancangPinter\PresenceLivewire;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,108 +21,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GancangPinterController::class, 'index'])->name('landing');
+Route::get('/', [SemesterController::class, 'index'])->name('landing');
 
-Route::get('/about', [GancangPinterController::class, 'about'])->name('about');
+Route::view('/about', 'sinau.about')->name('about');
 
-Route::get('/guru', [GancangPinterController::class, 'guru'])->name('guru');
+Route::view('/guru', 'sinau.guru')->name('guru');
 
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('semester/{semester}', [SemesterController::class, 'semester'])
+    ->name('bySemester');
+
+    Route::middleware('permission')->group(function () {
+        
+        Route::resource('enroll', EnrollController::class)
+        ->only(['show', 'update']);
     
-    /**
-     * Siswa Routes
-    */
-    Route::middleware('siswa')->group(function () {
+        Route::resource('enroll.meet', MeetController::class)
+        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     
-        /**
-         * Enrollments
-        */
-        Route::prefix('/enroll')->group(function() {
-            
-            /**
-             * View All
-            */
-            Route::get('/', function () {
-                return 'roll1';
-            });
-    
-            /**
-             * View by enroll id
-            */
-            Route::prefix('{id}')->group(function () {
-                
-                Route::get('/', function ($id) {
-                    return $id;
-                });
-    
-                /**
-                 * Presence
-                */
-                Route::prefix('presence')->group(function () {
-                    
-                    Route::get('/', function ($id) {
-                        return $id;
-                    });
-    
-                    Route::get('/{presence}', function ($id, $presence) {
-                        return $presence;
-                    });
-    
-                });
-    
-    
-            });
-    
-        });
-    
-    
+        Route::resource('enroll.meet.presence', PresenceController::class)
+        ->only(['store'])->middleware('siswa');
+
+        Route::resource('enroll.meet.material', MaterialController::class);
+
+        Route::get('enroll/{enroll}/meet/{meet}/presence', PresenceLivewire::class)
+        ->middleware('teacher')
+        ->name('teacherPresence');
+
     });
-    
-    
-    /**
-     * Guru Routes
-    */
-    Route::middleware('teacher')->group(function () {
-        /**
-         * Enrollments
-        */
-        Route::prefix('/enroll')->group(function() {
-            
-            /**
-             * View All
-            */
-            Route::get('/', function () {
-                return 'roll1';
-            });
-    
-            /**
-             * View by enroll id
-            */
-            Route::prefix('{id}')->group(function () {
-                
-                Route::get('/', function ($id) {
-                    return $id;
-                });
-    
-                /**
-                 * Presence
-                */
-                Route::prefix('presence')->group(function () {
-                    
-                    Route::get('/', function ($id) {
-                        return $id;
-                    });
-    
-                    Route::get('/{presence}', function ($id, $presence) {
-                        return $presence;
-                    });
-    
-                });
-    
-    
-            });
-    
-        });
-    });
+
 });

@@ -13,17 +13,43 @@ class Meet extends Model
      * Fillables
     */
     protected $fillable = [
-        'enroll_class_id',
+        'enroll_classroom_id',
         'title',
-        'date'
+        'date',
+        'opened_at',
+        'closed_at',
+        'presence_opened',
+        'presence_closed'
     ],
 
     /**
      * Casting
     */
     $casts = [
-        'enroll_class_id' => 'integer',
+        'enroll_classroom_id' => 'integer',
         'title' => 'string',
-        'date' => 'date'
+        'date' => 'date',
+        'opened_at' => 'datetime',
+        'closed_at' => 'datetime'
     ];
+
+
+    /**
+     * Material
+    */
+    public function material()
+    {
+        return $this->hasMany(Material::class);
+    }
+
+
+
+    /**
+     * Presence
+    */
+    public function presensi()
+    {
+        return $this->hasMany(PresenceMeet::class);
+    }
+
 }

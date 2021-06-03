@@ -2,3 +2,4 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'iziToast/dist/css/iziToast';
+@import 'aos/dist/aos';

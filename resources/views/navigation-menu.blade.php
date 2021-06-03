@@ -7,7 +7,6 @@
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex space-x-3">
                         <x-jet-application-mark class="block h-9 w-auto" />
-                        <h1 class="font-lg mt-1 font-semibold">Layanan Terpadu</h1>
                     </a>
                 </div>
 
@@ -161,8 +160,8 @@ class="fixed top-16 bottom-0 z-50 bg-white w-64 overflow-y-auto shadow-md">
         <x-dropdown icon="home" title="Beranda" href="dashboard"></x-dropdown>
         
         {{-- Siswa --}}
-        @if (Auth::user()->siswa)
-            <x-dropdown icon="home" title="Hasil Pembelajaran" href="siswa.report"></x-dropdown>
+        @if (Auth::user()->student)
+            {{-- <x-dropdown icon="home" title="Hasil Pembelajaran" href="siswa.report"></x-dropdown> --}}
         @else
             @if (Auth::user()->teacher->role->contains('role', 1))
             <x-dropdown icon="archive" title="Pengguna" :subs="[

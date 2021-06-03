@@ -18,6 +18,12 @@ mix.js('resources/js/app.js', 'js')
         require('tailwindcss'),
     ]);
 
+mix.js('resources/js/pinterapp.js', 'js')
+    .postCss('resources/css/pinterapp.css', 'css', [
+        require('postcss-import'),
+        require('summernote')
+    ])
+
 if (mix.inProduction()) {
     mix.version();
 }

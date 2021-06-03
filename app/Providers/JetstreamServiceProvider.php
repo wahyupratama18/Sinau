@@ -35,10 +35,15 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function(Request $request) {
 
             if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-                $user = User::where('email', $request->email)->first();
+                $user = User::where('email', $request->email)->with(['teacher', 'student'])->first();
+
+                if (!empty($user->student) && $user->student->active != 1 && !$user->teacher)
+                    return false;
+
             } else {
+                // Its ID Actually
                 $teach = Teacher::where('nip', $request->email)->with('user')->first();
-                $siswa = Student::with('user')->find($request->email);
+                $siswa = Student::with('user')->where('active', 1)->find($request->email);
 
                 if ($teach) $user = $teach->user;
                 else if ($siswa) $user = $siswa->user;

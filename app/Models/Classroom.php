@@ -27,6 +27,10 @@ class Classroom extends Model
         'group' => 'integer'
     ];
 
+    /**
+     * Department
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
     public function department()
     {
         return $this->belongsTo(Department::class);
