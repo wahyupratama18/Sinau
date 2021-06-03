@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\GancangPinter\{
     EnrollController,
+    MaterialController,
     MeetController,
+    PresenceController,
     SemesterController
 };
-
+use App\Http\Livewire\GancangPinter\PresenceLivewire;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,16 +33,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('semester/{semester}', [SemesterController::class, 'semester'])
     ->name('bySemester');
 
+    Route::middleware('permission')->group(function () {
+        
+        Route::resource('enroll', EnrollController::class)
+        ->only(['show', 'update']);
     
-    /**
-     * Enrollments
-    */
-    Route::resource('enroll', EnrollController::class)
-    ->middleware('permission')
-    ->only(['show', 'update']);
+        Route::resource('enroll.meet', MeetController::class)
+        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    
+        Route::resource('enroll.meet.presence', PresenceController::class)
+        ->only(['store'])->middleware('siswa');
 
-    Route::resource('enroll.meet', MeetController::class)
-    ->middleware('permission')
-    ->only(['create', 'store', 'show']);
+        Route::resource('enroll.meet.material', MaterialController::class);
+
+        Route::get('enroll/{enroll}/meet/{meet}/presence', PresenceLivewire::class)
+        ->middleware('teacher')
+        ->name('teacherPresence');
+
+    });
 
 });

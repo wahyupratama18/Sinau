@@ -24,13 +24,13 @@ class GancangPinterPermission
                 $request->user()->student &&
                 !EnrollClassroom::whereHas('history.stClass', function($q) use ($id) {
                     return $q->where('student_id', $id);
-                })->findOrFail($request->enroll)
+                })->find($request->enroll)
             ) || (
                 $request->user()->teacher &&
                 !TeacherRole::where('role', 1)->where('teacher_id', $id)->first() &&
                 !EnrollClassroom::whereHas('enroll', function($q) use ($id) {
                     return $q->where('teacher_id', $id);
-                })->findOrFail($request->enroll)
+                })->find($request->enroll)
             )
         ) abort(404);
 

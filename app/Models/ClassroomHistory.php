@@ -68,4 +68,14 @@ class ClassroomHistory extends Model
         return $this->hasMany(StudentClassroom::class, 'history_id');
     }
 
+
+    /**
+     * Enroll Classroom
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function rolls()
+    {
+        return $this->hasMany(EnrollClassroom::class, 'history_id');
+    }
+
 }

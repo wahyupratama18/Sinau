@@ -28,4 +28,14 @@ class PresenceMeet extends Model
         'student_id' => 'integer',
         'remarks' => 'string'
     ];
+
+
+    /**
+     * Presence Type
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function presence()
+    {
+        return $this->belongsTo(Presence::class);
+    }
 }

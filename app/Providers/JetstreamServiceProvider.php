@@ -37,7 +37,7 @@ class JetstreamServiceProvider extends ServiceProvider
             if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
                 $user = User::where('email', $request->email)->with(['teacher', 'student'])->first();
 
-                if ($user->student && $user->student->active != 1 && !$user->teacher)
+                if (!empty($user->student) && $user->student->active != 1 && !$user->teacher)
                     return false;
 
             } else {

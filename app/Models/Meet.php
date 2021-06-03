@@ -30,8 +30,26 @@ class Meet extends Model
         'title' => 'string',
         'date' => 'date',
         'opened_at' => 'datetime',
-        'closed_at' => 'datetime',
-        'presence_opened' => 'time',
-        'presence_closed' => 'time'
+        'closed_at' => 'datetime'
     ];
+
+
+    /**
+     * Material
+    */
+    public function material()
+    {
+        return $this->hasMany(Material::class);
+    }
+
+
+
+    /**
+     * Presence
+    */
+    public function presensi()
+    {
+        return $this->hasMany(PresenceMeet::class);
+    }
+
 }

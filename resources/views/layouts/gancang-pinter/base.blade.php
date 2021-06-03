@@ -15,6 +15,7 @@
         <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
         @stack('css')
+        @livewireStyles
 
         <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -50,6 +51,54 @@
             </div>
         </footer>
         @endguest
+
+        @livewireScripts
+        
         @stack('js')
+
+        @if (session('message'))
+        <script>
+            window.addEventListener('alert', event => {
+                
+                data = {
+                    message: "{{ session('message') }}",
+                    position: 'topRight'
+                }
+
+                switch("{{ session('type') }}"){
+                    case 'success':
+                        iziToast.success(data)
+                        break
+                    case 'error':
+                        iziToast.error(data)
+                        break
+                }
+
+
+            })
+        </script>
+        @endif
+
+        <script>
+            window.addEventListener('alert', event => {
+                
+                data = {
+                    title: event.detail.title ?? '',
+                    message: event.detail.message,
+                    position: 'topRight'
+                }
+
+                switch(event.detail.type){
+                    case 'success':
+                        iziToast.success(data)
+                        break
+                    case 'error':
+                        iziToast.error(data)
+                        break
+                }
+
+
+            })
+        </script>
     </body>
 </html>
