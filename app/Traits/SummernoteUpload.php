@@ -29,12 +29,14 @@ trait SummernoteUpload
   
             $data = $img->getAttribute('src'); 
             
-            if (!preg_match('/gancangpinter.blamus.ac.id/i', $data)) {
+            if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
 
                 list($type, $data) = explode(';', $data);
                 list($type, $data) = explode(',', $data);
       
                 $data = base64_decode($data);
+
+                if (!imagecreatefromstring($data)) continue;
 
                 $uri = ($sub ? $sub.'/' : '').Str::random(16).'-'.$img->getAttribute('data-filename');
                 $path = "$folder/$uri";

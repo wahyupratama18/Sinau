@@ -3,8 +3,7 @@
     let {{ $id }} = new Choices($refs.{{ $id }}, {
         itemSelectText: '',
         removeItemButton:true
-    }),
-    selected = {!! $attributes['selected'] ?? 'null' !!}
+    })
 
     {{ $id }}.passedElement.element.addEventListener('change', e => {
         @this.set('{{ $attributes['wire:model'] }}', e.detail.value)
@@ -24,8 +23,9 @@
         })
     @endif
     
-
-    {{ $id }}.setChoiceByValue(selected)
+    @if ($attributes['selected'])
+        {{ $id }}.setChoiceByValue('{{ $attributes['selected'] }}')
+    @endif
 }">
     <!-- Be present above all else. - Naval Ravikant -->
     <select id="{{ $id }}" wire-model="{{ $attributes['wire:model'] }}" wire:change="{{ $attributes['wire:change'] }}" x-ref="{{ $id }}">

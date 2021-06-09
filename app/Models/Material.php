@@ -33,5 +33,38 @@ class Material extends Model
         'ordered_meet' => 'integer',
         'opened_at' => 'datetime',
         'closed_at' => 'datetime'
+    ],
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    $appends = ['typing'],
+    
+    /**
+     * All Material Type
+    */
+    $types = [
+        1 => 'Tugas',
+        2 => 'Materi'
     ];
+
+    /**
+     * Get All Types
+     * @return string[]
+    */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * Get Type Name
+     * @return string
+    */
+    public function getTypingAttribute()
+    {
+        return $this->types[$this->type];
+    }
 }

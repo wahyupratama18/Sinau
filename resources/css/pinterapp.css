@@ -1,3 +1,16 @@
 @import 'bootstrap';
 @import 'iziToast/dist/css/iziToast';
 @import 'aos/dist/aos';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css');
+@import url('https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css');
+@import 'uppy/dist/uppy';
+
+#sidebar{
+    height: 100%!important;
+}
+.note-toolbar{
+    background-color: rgb(243, 243, 243)!important;
+}
+.note-editable{
+    background-color: white;
+}

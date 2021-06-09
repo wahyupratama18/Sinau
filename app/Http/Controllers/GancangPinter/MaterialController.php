@@ -3,12 +3,41 @@
 namespace App\Http\Controllers\GancangPinter;
 
 use App\Http\Controllers\Controller;
-use App\Traits\EnrollTraits;
+use App\Models\{Material, MaterialFile};
+use App\Traits\{EnrollTraits, SummernoteUpload};
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    use EnrollTraits;
+    use EnrollTraits, SummernoteUpload;
+
+    public function __construct()
+    {
+        $this->middleware('teacher')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
+    /**
+     * Save
+    */
+    private function saved(Request $request, int $id = null)
+    {
+        $request->validate([
+            'type' => 'required|integer|between:1,2',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'opened_at' => 'nullable|date_format:H:i',
+            'closed_at' => 'nullable|date_format:H:i|after:opened_at'
+        ]);
+
+        Material::updateOrCreate(['id' => $id], [
+            'meet_id' => $request->meet,
+            'title' => $request->title,
+            'description' => $this->upload($request->description, 'images'),
+            'type' => $request->type,
+            'opened_at' => $request->opened_at,
+            'closed_at' => $request->closed_at
+        ]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,11 +54,15 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(int $course)
+    public function create(int $course, int $meet)
     {
+        $m = new Material();
+
         return view('sinau.enroll.material.form', [
             'course' => $this->getCourse($course),
-            'route' => 'store'
+            'meet' => $meet,
+            'route' => 'store',
+            'material' => $m->getTypes()
         ]);
     }
 
@@ -41,7 +74,12 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->saved($request);
+
+        return redirect()->route('enroll.meet.show', [
+            'enroll' => $request->enroll,
+            'meet' => $request->meet
+        ]);
     }
 
     /**
@@ -81,11 +119,27 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $enroll
+     * @param  int  $meet
+     * @param  int  $material
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $enroll, int $meet, int $material)
     {
-        //
+        Material::findOrFail($material)->delete();
+        /* $m = MaterialFile::where('material_id', $material);
+
+        // Delete each items
+        foreach ($m->get() as $key) {
+            # code...
+        }
+
+        $m->delete(); */
+
+        return redirect()->route('enroll.meet.show', [
+            'enroll' => $enroll,
+            'meet' => $meet
+        ]);
+
     }
 }

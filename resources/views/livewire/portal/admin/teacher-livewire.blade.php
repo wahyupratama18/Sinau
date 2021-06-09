@@ -8,7 +8,7 @@ class="py-12 mx-auto px-6">
                 <h2>{{ __('Data Guru') }}</h2>
                 <x-jet-button @click="view = 2">Tambah Data</x-jet-button>
             </div>
-            <h2 x-show="view == 2" class="cursor-pointer" wire:click="setID(null)" @click="view = 1">< Kembali</h2>
+            <h2 x-show="view == 2" class="cursor-pointer" wire:click="setID(null)" @click="view = 1"><i class="mdi mdi-chevron-left"></i> Kembali</h2>
         </div>
         <div class="p-4">
             <div x-show="view == 1">
@@ -126,7 +126,7 @@ class="py-12 mx-auto px-6">
                     {{-- Submission --}}
                     <div class="flex items-center justify-end px-4 py-3 text-right ">
                         <x-jet-button wire:loading.attr="disabled">
-                            {{ __('Save') }}
+                            {{ __('Simpan') }}
                         </x-jet-button>
                     </div>
                     {{-- End Submission --}}

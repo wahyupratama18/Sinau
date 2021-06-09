@@ -5,7 +5,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3">
             
-            <div class="hidden md:flex items-center text-center bg-blue-200 text-white px-6 py-4">
+            <div class="hidden md:flex items-center text-center bg-blue-400 text-white px-6 py-4">
                 <div class="flex-1 flex items-center justify-center">
                     <x-jet-authentication-card-logo />
                 </div>

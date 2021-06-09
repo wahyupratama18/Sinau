@@ -18,11 +18,14 @@ mix.js('resources/js/app.js', 'js')
         require('tailwindcss'),
     ]);
 
-mix.js('resources/js/pinterapp.js', 'js')
+mix.autoload({
+        jquery: ['$', 'window.jQuery', 'jQuery'],
+        'popper.js/dist/umd/popper.js': ['Popper']
+    })
+    .js('resources/js/pinterapp.js', 'js')
     .postCss('resources/css/pinterapp.css', 'css', [
-        require('postcss-import'),
-        require('summernote')
-    ])
+        require('postcss-import')
+    ]).version();
 
 if (mix.inProduction()) {
     mix.version();

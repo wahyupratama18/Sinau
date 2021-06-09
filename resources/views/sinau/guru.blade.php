@@ -1,4 +1,4 @@
-<x-gancang-pinter>
+<x-gancang-pinter.guest>
     <!--Content-->
     <div class="justify-content-center">
         <div class="jumbotron jumbotron-fluid" style="margin-top: 10vh;">
@@ -41,4 +41,4 @@
             </div>
         </div>
     </div>
-</x-gancang-pinter>
+</x-gancang-pinter.guest>

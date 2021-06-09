@@ -11,15 +11,22 @@
             ]) }}">{{ $course->enroll->course->name }}</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('enroll.meet.create', [
-                'enroll' => $course->id
+            <a href="{{ route('enroll.meet.show', [
+                'enroll' => $course->id,
+                'meet' => $meet
             ]) }}">{{ __('Pertemuan') }}</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ route('enroll.meet.material.create', [
+                'enroll' => $course->id,
+                'meet' => $meet
+            ]) }}">{{ __('Materi') }}</a>
         </li>
     </x-slot>
 
-    <form action="{{ route('enroll.meet.'.$route, $route == 'update' ? ['enroll' => $course->id, 'meet' => $meet->id]
-    : ['enroll' => $course->id]
-    ) }}" method="post">
+    <form action="{{ route('enroll.meet.material.'.$route, $route == 'update' ? ['enroll' => $course->id, 'meet' => $meet, 'material' => null]
+    : ['enroll' => $course->id, 'meet' => $meet]
+    ) }}" method="post" enctype="multipart/form-data" class="dropzone">
 
         @if ($route == 'update')
             @method('put')
@@ -27,44 +34,47 @@
 
         @csrf
         <div class="form-group">
-            <label for="title">Judul Pertemuan</label>
-            <input id="title" type="text" class="form-control" name="title" value="{{ $meet->title ?? old('title') ?? null }}">
+            <label for="type">Tipe</label>
+            <select name="type" id="type" class="form-control">
+                @foreach ($material as $key => $val)
+                    <option value="{{ $key }}" {{ $key == old('type') ? 'selected' : '' }}>{{ $val }}</option>
+                @endforeach
+            </select>
+            @error('type')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="title">Judul</label>
+            <input id="title" type="text" class="form-control" name="title" value="{{ old('title') ?? null }}">
             @error('title')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        
-        <div class="form-group">
-            <label for="date">Tanggal Pertemuan</label>
-            <input id="date" type="date" class="form-control" name="date" value="{{ isset($meet) ? $meet->date->toDateString() : old('date') ?? null }}">
-            @error('date')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        
-        {{-- Opsional --}}
-        <div class="text-info">Opsional</div>
-        <div class="form-group">
-            <label for="presence_opened">Presensi Dibuka</label>
-            <input id="presence_opened" type="time" class="form-control" name="presence_opened" value="{{ isset($meet) ? date('H:i', strtotime($meet->presence_opened)) : old('presence_opened') ?? null }}">
-            @error('presence_opened')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        
-        <div class="form-group">
-            <label for="presence_closed">Presensi Ditutup</label>
-            <input id="presence_closed" type="time" class="form-control" name="presence_closed" value="{{ isset($meet) ? date('H:i', strtotime($meet->presence_closed)) : old('presence_closed') ?? null }}">
-            @error('presence_closed')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        
-        
 
         <div class="form-group">
+            <label for="description">Deskripsi</label>
+            <textarea aria-label="Description" name="description" cols="30" rows="10">{!! old('description') ?? null !!}</textarea>
+            @error('description')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="description">Unggah File</label>
+            <input type="file" 
+                class="filepond"
+                name="filepond" 
+                multiple 
+                data-allow-reorder="true"
+                data-max-file-size="3MB"
+                data-max-files="3">
+        </div>
+
+        <div class="text-info">Opsional</div>
+        <div class="form-group">
             <label for="opened_at">Materi Dibuka</label>
-            <input id="opened_at" type="datetime-local" class="form-control" name="opened_at" value="{{ isset($meet) ? $meet->opened_at->format('Y-m-d\TH:i') : old('opened_at') ?? null }}">
+            <input id="opened_at" type="datetime-local" class="form-control" name="opened_at" value="{{ false ? $meet->opened_at->format('Y-m-d\TH:i') : old('opened_at') ?? null }}">
             @error('opened_at')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -72,7 +82,7 @@
         
         <div class="form-group">
             <label for="closed_at">Materi Ditutup</label>
-            <input id="closed_at" type="datetime-local" class="form-control" name="closed_at"  value="{{ isset($meet) ? $meet->closed_at->format('Y-m-d\TH:i') : old('closed_at') ?? null }}">
+            <input id="closed_at" type="datetime-local" class="form-control" name="closed_at" value="{{ false ? $meet->closed_at->format('Y-m-d\TH:i') : old('closed_at') ?? null }}">
             @error('closed_at')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -85,8 +95,13 @@
             </button>
         </div>
     </form>
-    
-    <div class="line my-4"></div>
 
+    @push('js')
+        <script>
+            $(document).ready(function() {
+                $('textarea[name="description"]').summernote()
+            })
+        </script>
+    @endpush
 
 </x-gancang-pinter.admin>

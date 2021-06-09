@@ -3,7 +3,7 @@
         {{ $logo }}
     </div>
 
-    <div class="w-full sm:max-w-xl mt-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-xl mt-6 bg-white shadow-md overflow-hidden sm:rounded-2xl">
         {{ $slot }}
     </div>
 </div>

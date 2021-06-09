@@ -96,39 +96,32 @@
     </div>
 
     
-    <div x-data="{view:1}">
-        <div class="d-flex justify-content-between">
-            <h4 class="mb-0 text-info" data-aos="flip-up">{{ __('Pengumuman') }}</h4>
-            @if (Auth::user()->teacher)
-            <i @click="view = 2" x-show="view == 1" class="fas fa-edit text-info" style="cursor: pointer;"></i>
-            <i @click="view = 1" x-show="view == 2" class="fas fa-times text-info" style="cursor: pointer;"></i>
+    @foreach ($meet->material as $val)
+        <div class="d-flex align-middle">
+            <i class="fas fa-file"></i>
+            <div>
+                <h4 class="ml-2">{{ $val->title }}</h4>
+                {!! $val->description !!}
+            </div>
+            @if (Auth::user()->teacher)    
+            <div class="ml-auto d-flex">
+                <a class="text-warning mr-2" href="{{ route('enroll.meet.material.edit', ['enroll' => $course->id, 'meet' => $meet->id, 'material' => $val->id]) }}">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <form action="{{ route('enroll.meet.material.destroy', ['enroll' => $course->id, 'meet' => $meet->id, 'material' => $val->id]) }}" method="post">
+                    @method('delete')
+                    @csrf
+                    <a class="text-danger" href="{{ route('enroll.meet.material.destroy', ['enroll' => $course->id, 'meet' => $meet->id, 'material' => $val->id]) }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </form>
+            </div>
             @endif
         </div>
-        <div class="line mt-0 mb-4"></div>
-
-        <article x-show="view == 1" data-aos="flip-down">{!! $course->announcement !!}</article>
-        @if (Auth::user()->teacher)
-            <form x-show="view == 2" action="{{ route('enroll.update', ['enroll' => $course->id]) }}" method="post" style="display: none;">
-                @method('put')
-                @csrf
-                <textarea aria-label="Pengumuman" name="announcement" cols="30" rows="10">{!! $course->announcement !!}</textarea>
-
-                <div class="d-flex mt-4">
-                    <button type="submit" class="btn btn-info ml-auto">
-                        <i class="fas fa-save"></i> Simpan
-                    </button>
-                </div>
-            </form>
-
-            @push('js')
-                <script>
-                    $('textarea[name="announcement"]').summernote()
-                </script>
-            @endpush
-        @endif
-    </div>
+        <div class="line my-4"></div>
+    @endforeach
     
-    <div class="line my-4"></div>
 
 
 </x-gancang-pinter.admin>

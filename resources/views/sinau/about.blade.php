@@ -1,6 +1,6 @@
-<x-gancang-pinter>
+<x-gancang-pinter.guest>
     <!--content-->
-    <div class="container p-4">
+    <div class="container p-4" style="min-height: 90vh;">
         <h1 class="display-4" style="margin-top: 10vh;">Ini Headingnya</h1>
         <div class="container">
             <dl class="row justify-content-center" style="">
@@ -29,4 +29,4 @@
             </dl>
         </div>
     </div>
-</x-gancang-pinter>
+</x-gancang-pinter.guest>
