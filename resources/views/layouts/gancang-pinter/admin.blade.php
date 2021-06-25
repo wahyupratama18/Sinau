@@ -60,6 +60,7 @@
     @push('css')
         <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/solid.js" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/fontawesome.js" crossorigin="anonymous"></script>
+        @laravelPWA
     @endpush
     
     @push('js')
