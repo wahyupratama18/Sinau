@@ -7,7 +7,7 @@
         <nav id="sidebar">
             <div class="sidebar-header pb-2">
                 <a href="{{ route('landing') }}">
-                    <img src="{{ asset('storage/logos/reel-legit/logo-reel-legit.png') }}" alt="" class="img-fluid" style="height: 50px;">
+                    <img src="{{ asset('storage/logos/reel/144/white.png') }}" alt="" class="img-fluid" style="height: 50px;">
                 </a>
             </div>
 
